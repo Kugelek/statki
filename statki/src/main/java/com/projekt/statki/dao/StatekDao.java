@@ -4,6 +4,7 @@ import com.projekt.statki.model.Statek;
 
 import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface StatekDao {
@@ -13,4 +14,10 @@ public interface StatekDao {
         return  insertStatek(id,statek);
     }
     List<Statek> selectAllStateks();
+
+    Optional<Statek> selectStatekById(UUID id);
+
+    int deleteStatekById(UUID id);
+
+    int updateStatekById(UUID id, Statek statek);
 }

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StatekService {
@@ -22,5 +25,14 @@ public class StatekService {
     }
     public List<Statek> getAllStateks(){
         return statekDao.selectAllStateks();
+    }
+    public Optional<Statek> getStatekById(UUID id){
+        return  statekDao.selectStatekById(id);
+    }
+    public int deleteStatek(UUID id){
+        return statekDao.deleteStatekById(id);
+    }
+    public int updateStatek(UUID id, Statek statek){
+        return  statekDao.updateStatekById(id,statek);
     }
 }
