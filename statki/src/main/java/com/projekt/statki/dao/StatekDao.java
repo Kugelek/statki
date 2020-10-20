@@ -19,5 +19,7 @@ public interface StatekDao {
 
     int deleteStatekById(UUID id);
 
+    int updateStatekColorById(UUID id, Statek statek);
+
     int updateStatekById(UUID id, Statek statek);
 }

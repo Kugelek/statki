@@ -4,6 +4,7 @@ import com.projekt.statki.model.Statek;
 import com.projekt.statki.service.StatekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,8 +41,13 @@ public class StatekController {
         statekService.deleteStatek(id);
     }
     @PutMapping(path = "{id}")
-    public  void updateStatek(@PathVariable("id") UUID id, @NonNull @RequestBody Statek statekToUpdate){
+    public  void updateStatek(@PathVariable("id") UUID id, @Validated @NonNull @RequestBody Statek statekToUpdate){
         statekService.updateStatek(id,statekToUpdate);
     }
+    //TODO zmiana koloru
+//    @PutMapping(path = "{id}")
+//    public  void updateStatekColor(@PathVariable("id") UUID id, @Validated @NonNull @RequestBody Statek statekToUpdate){
+//        statekService.updateStatekColor(id,statekToUpdate);
+//    }
 
 }
