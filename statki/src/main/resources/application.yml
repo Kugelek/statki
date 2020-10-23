@@ -2,5 +2,5 @@ app:
   datasource:
     jdbc-url: jdbc:postgresql://localhost:5432/statkidb
     username: postgres
-    password: statki123
+    password: Statki123
     pool-size: 1000
