@@ -9,6 +9,9 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
+	<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
+
 
 </head>
 <body>
@@ -30,17 +33,135 @@
 				<ul class="nav navbar-nav">
 					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
 				</ul>
+				Welcome <span sec:authentication="principal.username"> User</span>
 			</div>
+
 		</div>
 	</nav>
 
 	<br>
 	<br>
 
-	<div class="container">
-		<h1>Registration and Login with Spring Boot, Spring Security,
-			Thymeleaf, Hibernate and MySQL</h1>
-		Welcome <span sec:authentication="principal.username"> User</span>
-	</div>
+
+	<script th:inline="javascript">
+
+
+		var message = /*[[${message}]]*/ 'default';
+		console.log(message);
+		console.log("XD");
+
+
+
+		function Blob(x, y, r) {
+			this.pos = createVector(x, y);
+			this.r = r;
+			this.vel = createVector(0, 0);
+
+			this.update = function() {
+				var newvel = createVector(mouseX - width / 2, mouseY - height / 2);
+				newvel.div(50);
+				//newvel.setMag(3);
+				newvel.limit(3);
+				this.vel.lerp(newvel, 0.2);
+				this.pos.add(this.vel);
+			};
+
+			this.eats = function(other) {
+				var d = p5.Vector.dist(this.pos, other.pos);
+				if (d < this.r + other.r) {
+					var sum = PI * this.r * this.r + PI * other.r * other.r;
+					this.r = sqrt(sum / PI);
+					//this.r += other.r;
+					return true;
+				} else {
+					return false;
+				}
+			};
+
+			this.constrain = function() {
+				blob.pos.x = constrain(blob.pos.x, -width / 4, width / 4);
+				blob.pos.y = constrain(blob.pos.y, -height / 4, height / 4);
+			};
+
+			this.show = function() {
+				fill(255);
+				ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2);
+			};
+		}
+
+		var socket;
+
+		var blob;
+
+		var blobs = [];
+		var missiles = [];
+		var zoom = 1;
+
+		function setup() {
+			createCanvas(1400, 600);
+			//createCanvas(document.height / 1.5, document.width / 1.5);
+
+			socket = io.connect('http://localhost:3000');
+
+			blob = new Blob(random(width), random(height), random(8, 24));
+
+			var data = {
+				x: blob.pos.x,
+				y: blob.pos.y,
+				r: blob.r
+			};
+			socket.emit('start', data);
+
+			socket.on('heartbeat', function(data) {
+				//console.log(data);
+				blobs = data;
+			});
+		}
+
+		function draw() {
+			background(0);
+			console.log(blob.pos.x, blob.pos.y);
+
+			translate(width / 2, height / 2);
+			var newzoom = 64 / blob.r;
+			zoom = lerp(zoom, newzoom, 0.1);
+			scale(zoom);
+			translate(-blob.pos.x, -blob.pos.y);
+
+			for (var i = blobs.length - 1; i >= 0; i--) {
+				var id = blobs[i].id;
+				if (id.substring(2, id.length) !== socket.id) {
+					fill(0, 100, 100);
+					ellipse(blobs[i].x, blobs[i].y, blobs[i].r * 2, blobs[i].r * 2);
+
+					fill(255);
+					textAlign(CENTER);
+					textSize(4);
+					text(blobs[i].id, blobs[i].x, blobs[i].y + blobs[i].r);
+				}
+				// blobs[i].show();
+				// if (blob.eats(blobs[i])) {
+				//   blobs.splice(i, 1);
+				// }
+			}
+
+			blob.show();
+			if (mouseIsPressed) {
+				blob.update();
+			}
+			blob.constrain();
+
+			var data = {
+				x: blob.pos.x,
+				y: blob.pos.y,
+				r: blob.r
+			};
+			socket.emit('update', data);
+		}
+
+
+
+		/*]]>*/
+	</script>
 </body>
 </html>
