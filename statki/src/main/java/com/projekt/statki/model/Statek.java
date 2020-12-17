@@ -5,15 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 public class Statek {
-    private final UUID id;
-    private final String kolor;
-    private double X;
-    private double Y;
+    private final UUID id = UUID.randomUUID();
+    private String kolor = "placeholder";
+    private double X = 0;
+    private double Y = 0;
 
+    public Statek() {}
 
+    public Statek(String kolor) {
+        this.kolor = kolor;
+        this.X = 0;
+        this.Y = 0;
+    }
 
     public Statek(@JsonProperty("id") UUID id, @JsonProperty("kolor")String kolor) {
-        this.id = id;
         this.kolor = kolor;
         this.X = 0;
         this.Y = 0;

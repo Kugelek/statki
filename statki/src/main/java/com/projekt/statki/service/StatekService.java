@@ -20,13 +20,13 @@ public class StatekService {
     }
 
     public int addStatek(Statek statek){
-        return  statekDao.insertStatek(statek);
+        return statekDao.insertStatek(statek);
     }
     public List<Statek> getAllStateks(){
         return statekDao.selectAllStateks();
     }
     public Optional<Statek> getStatekById(UUID id){
-        return  statekDao.selectStatekById(id);
+        return statekDao.selectStatekById(id);
     }
     public int deleteStatek(UUID id){
         return statekDao.deleteStatekById(id);
@@ -35,6 +35,6 @@ public class StatekService {
         return statekDao.updateStatekById(id, statek);
     }
     public int updateStatekColor(UUID id, Statek statek){
-        return  statekDao.updateStatekColorById(id,statek);
+        return statekDao.updateStatekColorById(id,statek);
     }
 }

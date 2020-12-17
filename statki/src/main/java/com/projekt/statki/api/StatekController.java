@@ -4,14 +4,17 @@ import com.projekt.statki.model.Statek;
 import com.projekt.statki.service.StatekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("api/v1/statek")
-@RestController
+//@RequestMapping("api/v1/statek")
+@Controller
 public class StatekController {
     private final StatekService statekService;
 
@@ -23,6 +26,46 @@ public class StatekController {
     @PostMapping
     public void addStatek(@RequestBody Statek statek){
         statekService.addStatek(statek);
+    }
+
+    @GetMapping("/ships")
+    public String home(Model model) {
+        model.addAttribute("shipList", statekService.getAllStateks());
+        return "ships";
+    }
+
+    @GetMapping("/ship-add")
+    public String newStatek(Model model) {
+        model.addAttribute("ship", new Statek());
+        return "ship-add";
+    }
+
+    @PostMapping("/ship-add-error")
+    public String addStatek(Statek statek, Errors errors) {
+        if(errors.hasErrors())
+            return "ship-add";
+        statekService.addStatek(statek);
+        return "redirect:/ships";
+    }
+
+    @GetMapping("/ship-delete/{id}")
+    public String deleteStatek(@PathVariable("id") UUID id) {
+        statekService.deleteStatek(id);
+        return "redirect:/ships";
+    }
+
+    @GetMapping("/ship-edit/{id}")
+    public String newEditedStatek(@PathVariable("id") UUID id, Model model) {
+        model.addAttribute("ship", statekService.getStatekById(id));
+        return "ship-edit";
+    }
+
+    @PostMapping("/ship-edit")
+    public String editStatek(Statek statek, Errors errors) {
+        if(errors.hasErrors())
+            return "ships-edit";
+        statekService.updateStatek(statek.getId(),statek);
+        return "redirect:/ships";
     }
 
     @GetMapping
