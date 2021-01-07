@@ -1,9 +1,5 @@
 package com.projekt.statki.service;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import com.projekt.statki.model.Role;
 import com.projekt.statki.model.User;
 import com.projekt.statki.repository.UserRepository;
@@ -15,6 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 
 
@@ -34,21 +34,30 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User save(UserRegistrationDto registrationDto) {
-		User user = new User(registrationDto.getFirstName(), 
+		User user = new User(registrationDto.getFirstName(),
 				registrationDto.getLastName(), registrationDto.getEmail(),
 				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
-		
+
+		return userRepository.save(user);
+	}
+
+	@Override
+	public User updateScore(User user, Long actualScore) {
+		if (user.getHighScore() < actualScore) {
+			user.setHighScore(actualScore);
+		}
+
 		return userRepository.save(user);
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	
+
 		User user = userRepository.findByEmail(username);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));		
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
 	}
 	
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
