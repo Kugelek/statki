@@ -1,4 +1,5 @@
 let ships = [];
+let mines = [];
 
 class Ship {
   constructor(id, x, y, r){
@@ -19,6 +20,7 @@ let io = require('socket.io')(server);
 
 function heartbeat() {
   io.sockets.emit('heartbeat', ships);
+  io.sockets.emit('heartbeatmines', mines);
 //  console.log('emitted', ships);
 }
 
@@ -42,6 +44,35 @@ io.sockets.on(
       ship.x = data.x;
       ship.y = data.y;
       ship.r = data.r;
+    });
+
+    socket.on('createmine', function(data) {
+      var mine = {
+        x: "",
+        y: "",
+        r: ""
+      };
+      console.log(data);
+      mine.x = data.x;
+      mine.y = data.y;
+      mine.r = data.r;
+
+      mines.push(mine);
+    });
+
+    socket.on('mineexploded', function(data) {
+      mines.splice(data,1);
+      // var mine = {
+      //   x: "",
+      //   y: "",
+      //   r: ""
+      // };
+      // console.log(data);
+      // mine.x = data.x;
+      // mine.y = data.y;
+      // mine.r = data.r;
+
+      // mines.push(mine);
     });
 
     socket.on('disconnect', function() {
