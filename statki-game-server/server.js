@@ -2,11 +2,12 @@ let ships = [];
 let mines = [];
 
 class Ship {
-  constructor(id, x, y, r){
+  constructor(id, x, y, r, name){
     this.id = id;
     this.x = x;
     this.y = y;
     this.r = r;
+    this.name = name;
   }
 }
 
@@ -33,7 +34,7 @@ io.sockets.on(
 
     socket.on('start', function(data) {
       console.log("starcik", socket.id + ' ' + data.x + ' ' + data.y + ' ' + data.r);
-      ships.push(new Ship(socket.id, data.x, data.y, data.r));
+      ships.push(new Ship(socket.id, data.x, data.y, data.r, data.name));
     });
 
     socket.on('update', function(data) {
@@ -44,6 +45,7 @@ io.sockets.on(
       ship.x = data.x;
       ship.y = data.y;
       ship.r = data.r;
+      ship.name = data.name;
     });
 
     socket.on('createmine', function(data) {

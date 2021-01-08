@@ -5,6 +5,7 @@ let ships = [];
 let mines = [];
 let missiles = [];
 let zoom = 1;
+let xd = "xd";
 
 /**
  * setup() and draw() are default P5.JS functions
@@ -12,16 +13,16 @@ let zoom = 1;
  */
 
 function setup() {
-    createCanvas(1500, 700);
-    //createCanvas(document.height / 1.5, document.width / 1.5);
-
+    //createCanvas(1500, 700);
+    createCanvas(window.innerWidth, window.innerHeight);
     socket = io.connect('http://localhost:3000');
-    ship = new Ship(random(width), random(height), random(8, 24));
+    ship = new Ship(random(width), random(height), 15, document.getElementById("test").innerText);
 
     let data = {
         x: ship.position.x,
         y: ship.position.y,
-        r: ship.r
+        r: ship.r,
+        name: ship.name
     };
     socket.emit('start', data);
 
@@ -37,11 +38,14 @@ function setup() {
         //console.log(data);
         metheors = data;
     });
+
+
+
 }
 
 function draw() {
     background(0);
-    console.log(ship.position.x, ship.position.y);
+    //console.log(ship.position.x, ship.position.y);
 
     translate(width / 2, height / 2);
     let newzoom = 64 / ship.r;
@@ -58,14 +62,16 @@ function draw() {
             currentShip.y,
             currentShip.r * 2,
             currentShip.r * 2);
-
+        // text(currentShip.id,
+        //     currentShip.x,
+        //     currentShip.y + currentShip.r);
         fill(255);
         textAlign(CENTER);
         textSize(4);
+        text( currentShip.name, currentShip.x, currentShip.y + 1.5 * currentShip.r);
 
-        text(currentShip.id,
-            currentShip.x,
-            currentShip.y + currentShip.r);
+
+
 
     });
 
@@ -134,7 +140,8 @@ function draw() {
     let data = {
         x: ship.position.x,
         y: ship.position.y,
-        r: ship.r
+        r: ship.r,
+        name: ship.name
     };
     socket.emit('update', data);
 }

@@ -1,9 +1,10 @@
 class Ship {
 
-    constructor(x, y, r){
+    constructor(x, y, r, name){
         this.position = createVector(x, y);
         this.r = r;
         this.velocity = createVector(0, 0);
+        this.name = name;
     }
 
     update(){
@@ -21,5 +22,8 @@ class Ship {
     show() {
         fill(255);
         ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
+        stroke(133, 133, 133);
+        line(this.position.x, this.position.y, (mouseX - width / 2.2), (mouseY - height / 2.2));
+
     };
 }
