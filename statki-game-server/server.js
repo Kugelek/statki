@@ -2,11 +2,12 @@ let ships = [];
 let mines = [];
 
 class Ship {
-  constructor(id, x, y, r, name){
+  constructor(id, x, y, r, hp, name){
     this.id = id;
     this.x = x;
     this.y = y;
     this.r = r;
+    this.hp = hp;
     this.name = name;
   }
 }
@@ -34,7 +35,7 @@ io.sockets.on(
 
     socket.on('start', function(data) {
       console.log("starcik", socket.id + ' ' + data.x + ' ' + data.y + ' ' + data.r);
-      ships.push(new Ship(socket.id, data.x, data.y, data.r, data.name));
+      ships.push(new Ship(socket.id, data.x, data.y, data.r, data.hp, data.name));
     });
 
     socket.on('update', function(data) {
@@ -45,6 +46,7 @@ io.sockets.on(
       ship.x = data.x;
       ship.y = data.y;
       ship.r = data.r;
+      ship.hp = data.hp
       ship.name = data.name;
     });
 
@@ -60,21 +62,13 @@ io.sockets.on(
       mine.r = data.r;
 
       mines.push(mine);
+      console.log("created");
+      console.log(mine);
     });
 
     socket.on('mineexploded', function(data) {
       mines.splice(data,1);
-      // var mine = {
-      //   x: "",
-      //   y: "",
-      //   r: ""
-      // };
-      // console.log(data);
-      // mine.x = data.x;
-      // mine.y = data.y;
-      // mine.r = data.r;
-
-      // mines.push(mine);
+      console.log("deleted mine");
     });
 
     socket.on('disconnect', function() {

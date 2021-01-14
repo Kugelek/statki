@@ -8,20 +8,20 @@ let zoom = 1;
 let xd = "xd";
 
 /**
- * setup() and draw() are default P5.JS functions
+ * setup(), draw() keyPressed() are default P5.JS functions
  * dont change names or stuff before reading p5 docs, ty
  */
 
 function setup() {
-    //createCanvas(1500, 700);
     createCanvas(window.innerWidth, window.innerHeight);
     socket = io.connect('http://localhost:3000');
-    ship = new Ship(random(width), random(height), 15, document.getElementById("test").innerText);
+    ship = new Ship(random(width), random(height), 15, 100, document.getElementById("test").innerText);
 
     let data = {
         x: ship.position.x,
         y: ship.position.y,
         r: ship.r,
+        hp: ship.hp,
         name: ship.name
     };
     socket.emit('start', data);
@@ -62,16 +62,15 @@ function draw() {
             currentShip.y,
             currentShip.r * 2,
             currentShip.r * 2);
-        // text(currentShip.id,
-        //     currentShip.x,
-        //     currentShip.y + currentShip.r);
+
         fill(255);
         textAlign(CENTER);
         textSize(4);
         text( currentShip.name, currentShip.x, currentShip.y + 1.5 * currentShip.r);
 
-
-
+        rect(currentShip.x-20, currentShip.y-30, 40, 3, 5, 5, 5, 5);
+        fill(0, 100, 100);
+        rect(currentShip.x-20, currentShip.y-30, ship.hp/2.5, 3, 5, 5, 5, 5);
 
     });
 
@@ -80,10 +79,10 @@ function draw() {
         ellipse(currMine.x, currMine.y, currMine.r, currMine.r);
         let tempMine = new Mine(currMine.x, currMine.y, 9);
 
-        if (!blob.stepsOnMine(tempMine))
+        if (!ship.steppedOnMine(tempMine))
             return;
         mines.splice(currMineIndex, 1);
-        blob.hp -=25;
+        ship.hp -=25;
         console.log('stepped');
             //         // blobs.splice(i, 1);
             //         // var data = {
@@ -92,14 +91,16 @@ function draw() {
             //         //   r: 9
             //         // }
             //         // mines.push(mine);
-        socket.emit('mineexploded', k);
-        let hurtblob = {
-            x: blob.pos.x,
-            y: blob.pos.y,
-            r: blob.r,
-            hp: blob.hp
+        socket.emit('mineexploded', currMineIndex);
+        let hurtShip = {
+            x: ship.position.x,
+            y: ship.position.y,
+            r: ship.r,
+            hp: ship.hp,
+            name: ship.name
         };
-        socket.emit('update', hurtblob);
+        console.log(hurtShip);
+        socket.emit('update', hurtShip);
 
     });
     // for(var k = mines.length -1; k >=0; k--){
@@ -148,7 +149,7 @@ function draw() {
 
 function keyPressed() {
     if(keyCode === ENTER){
-        mine = new Mine(ship.position.x+20, ship.position.y+20, random(8, 15));
+        mine = new Mine(ship.position.x+20, ship.position.y+20, 9);
         console.log(mine);
         var data = {
             x: ship.position.x+20,

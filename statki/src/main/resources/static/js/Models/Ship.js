@@ -1,9 +1,10 @@
 class Ship {
 
-    constructor(x, y, r, name){
+    constructor(x, y, r, hp, name){
         this.position = createVector(x, y);
         this.r = r;
         this.velocity = createVector(0, 0);
+        this.hp = hp;
         this.name = name;
     }
 
@@ -14,6 +15,20 @@ class Ship {
         this.velocity.lerp(updatedVelocity, 0.2);
         this.position.add(this.velocity);
     }
+
+    steppedOnMine(other) {
+        var d = p5.Vector.dist(this.position, other.position);
+        if (d < 2 * other.r) {
+
+            // var sum = PI * this.r * this.r + PI * other.r * other.r;
+            // this.r = sqrt(sum / PI);
+            //this.r += other.r;
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     constrain(){
         ship.position.x = constrain(ship.position.x, -width / 4, width / 4);
         ship.position.y = constrain(ship.position.y, -height / 4, height / 4);

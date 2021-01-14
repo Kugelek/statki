@@ -3,7 +3,7 @@ class Mine {
         this.x = x;
         this.y=y;
         this.r = r;
-        this.pos = createVector(x, y);
+        this.position = createVector(x, y);
         this.vel = createVector(0, 0);
     }
 
