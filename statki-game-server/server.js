@@ -1,5 +1,7 @@
 let ships = [];
 let mines = [];
+let missiles = [];
+
 
 class Ship {
   constructor(id, x, y, r, hp, name){
@@ -23,7 +25,7 @@ let io = require('socket.io')(server);
 function heartbeat() {
   io.sockets.emit('heartbeat', ships);
   io.sockets.emit('heartbeatmines', mines);
-//  console.log('emitted', ships);
+  io.sockets.emit('heartbeatmissiles', missiles);
 }
 
 setInterval(heartbeat, 33);
@@ -43,11 +45,14 @@ io.sockets.on(
       // console.log("XD updejcik");
       // console.log(ships);
       let ship = ships.filter(el => el.id === socket.id)[0];
-      ship.x = data.x;
-      ship.y = data.y;
-      ship.r = data.r;
-      ship.hp = data.hp;
-      ship.name = data.name;
+      if(ship){
+        ship.x = data.x;
+        ship.y = data.y;
+        ship.r = data.r;
+        ship.hp = data.hp;
+        ship.name = data.name;
+      }
+    
     });
 
     socket.on('createmine', function(data) {
@@ -70,6 +75,14 @@ io.sockets.on(
       mines.splice(data,1);
       console.log("deleted mine");
     });
+
+    socket.on('shipexploded', function(data) {
+      ships.splice(data,1);
+      console.log("deleted ship");
+      console.log(ships);
+
+    });
+   
 
     socket.on('disconnect', function() {
       console.log('disconnected');

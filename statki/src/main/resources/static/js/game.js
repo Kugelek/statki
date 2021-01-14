@@ -44,6 +44,8 @@ function setup() {
 }
 
 function draw() {
+    if(!ship)
+        return;
     background(0);
     //console.log(ship.position.x, ship.position.y);
 
@@ -83,15 +85,12 @@ function draw() {
             return;
         mines.splice(currMineIndex, 1);
         ship.hp -=25;
+
         console.log('stepped');
-            //         // blobs.splice(i, 1);
-            //         // var data = {
-            //         //   x: blob.pos.x,
-            //         //   y: blob.pos.y,
-            //         //   r: 9
-            //         // }
-            //         // mines.push(mine);
+            //         //ships.splice(i, 1);
+
         socket.emit('mineexploded', currMineIndex);
+
         let hurtShip = {
             x: ship.position.x,
             y: ship.position.y,
@@ -99,40 +98,22 @@ function draw() {
             hp: ship.hp,
             name: ship.name
         };
-        console.log(hurtShip);
-        socket.emit('update', hurtShip);
+        if(ship && ship.hp > 0){
+            console.log(hurtShip);
+            socket.emit('update', hurtShip);
+        }else{
+            ships.splice(ships.indexOf(ship), 1);
+            ship = null;
+            socket.emit("shipexploded", ships.indexOf(ship));
+        }
+
 
     });
-    // for(var k = mines.length -1; k >=0; k--){
-    //     fill('rgb(61%,72%,73%)');
-    //     ellipse(mines[k].x, mines[k].y, mines[k].r, mines[k].r);
-    //
-    //     var tempMine = new Mine(mines[k].x, mines[k].y, 9);
-    //     if (blob.stepsOnMine(tempMine)) {
-    //         mines.splice(k, 1);
-    //         blob.hp -=25;
-    //         console.log('stepped');
-    //         // blobs.splice(i, 1);
-    //         // var data = {
-    //         //   x: blob.pos.x,
-    //         //   y: blob.pos.y,
-    //         //   r: 9
-    //         // }
-    //         console.log(data);
-    //         // mines.push(mine);
-    //         socket.emit('mineexploded', k);
-    //         var hurtblob = {
-    //             x: blob.pos.x,
-    //             y: blob.pos.y,
-    //             r: blob.r,
-    //             hp: blob.hp
-    //         };
-    //         socket.emit('update', hurtblob);
-    //     }
-    //
-    // }
 
-    ship.show();
+    if(ship.hp > 0){
+        ship.show();
+    }
+
     if (mouseIsPressed) {
         ship.update();
     }
@@ -149,6 +130,8 @@ function draw() {
 }
 
 function keyPressed() {
+    if(!ship)
+        return;
     if(keyCode === ENTER){
         mine = new Mine(ship.position.x+20, ship.position.y+20, 9);
         console.log(mine);
