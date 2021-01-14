@@ -70,7 +70,7 @@ function draw() {
 
         rect(currentShip.x-20, currentShip.y-30, 40, 3, 5, 5, 5, 5);
         fill(0, 100, 100);
-        rect(currentShip.x-20, currentShip.y-30, ship.hp/2.5, 3, 5, 5, 5, 5);
+        rect(currentShip.x-20, currentShip.y-30, currentShip.hp/2.5, 3, 5, 5, 5, 5);
 
     });
 
@@ -142,6 +142,7 @@ function draw() {
         x: ship.position.x,
         y: ship.position.y,
         r: ship.r,
+        hp: ship.hp,
         name: ship.name
     };
     socket.emit('update', data);

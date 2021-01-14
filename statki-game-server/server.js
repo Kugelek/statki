@@ -46,7 +46,7 @@ io.sockets.on(
       ship.x = data.x;
       ship.y = data.y;
       ship.r = data.r;
-      ship.hp = data.hp
+      ship.hp = data.hp;
       ship.name = data.name;
     });
 
