@@ -6,11 +6,13 @@ let mines = [];
 let missiles = [];
 let zoom = 1;
 let xd = "xd";
+let gameEnded = false;
 
 /**
  * setup(), draw() keyPressed() are default P5.JS functions
  * dont change names or stuff before reading p5 docs, ty
  */
+const reloadPage = ( ) => window.location.reload();
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -44,8 +46,10 @@ function setup() {
 }
 
 function draw() {
-    if(!ship)
+    if(!ship || gameEnded){
         return;
+    }
+
     background(0);
     //console.log(ship.position.x, ship.position.y);
 
@@ -56,8 +60,10 @@ function draw() {
     translate(-ship.position.x, -ship.position.y);
 
     ships.forEach(currentShip => {
-        if (currentShip.id.substring(2, currentShip.id.length) === socket.id)
+        if (currentShip.id.substring(2, currentShip.id.length) === socket.id){
             return;
+        }
+
         fill(0, 100, 100);
         ellipse(
             currentShip.x,
@@ -73,6 +79,8 @@ function draw() {
         rect(currentShip.x-20, currentShip.y-30, 40, 3, 5, 5, 5, 5);
         fill(0, 100, 100);
         rect(currentShip.x-20, currentShip.y-30, currentShip.hp/2.5, 3, 5, 5, 5, 5);
+
+
 
     });
 
@@ -102,8 +110,31 @@ function draw() {
             console.log(hurtShip);
             socket.emit('update', hurtShip);
         }else{
+
+            background(0);
+            fill(20, 20, 20);
+            stroke(40,40,40);
+            strokeWeight(2);
+            rect(ship.position.x - 100, ship.position.y - 100, 200, 200, 5,5,5,5);
+
+            fill(240, 240, 240);
+            textAlign(CENTER);
+            textSize(16);
+            text( "GAME OVERRR", ship.position.x, ship.position.y-20);
+
+            textSize(10);
+            const nickname = document.getElementById("test").innerText;
+            text( `${nickname}`, ship.position.x, ship.position.y);
+            textSize(5);
+            text( "SCORE: 1000", ship.position.x, ship.position.y+10);
+
+            button = createButton('Try again!');
+            button.position(ship.position.x, ship.position.y+25);
+            button.mousePressed(reloadPage);
+
             ships.splice(ships.indexOf(ship), 1);
             ship = null;
+            gameEnded = true;
             socket.emit("shipexploded", ships.indexOf(ship));
         }
 
@@ -128,6 +159,8 @@ function draw() {
     };
     socket.emit('update', data);
 }
+
+
 
 function keyPressed() {
     if(!ship)
