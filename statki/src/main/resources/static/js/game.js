@@ -17,7 +17,7 @@ const reloadPage = ( ) => window.location.reload();
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     socket = io.connect('http://localhost:3000');
-    ship = new Ship(random(width), random(height), 15, 100, document.getElementById("test").innerText);
+    ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText);
 
     let data = {
         x: ship.position.x,
@@ -123,7 +123,9 @@ function draw() {
             text( "GAME OVERRR", ship.position.x, ship.position.y-20);
 
             textSize(10);
-            const nickname = document.getElementById("test").innerText;
+            const nickname = document.getElementById("mailvalue").innerText;
+
+
             text( `${nickname}`, ship.position.x, ship.position.y);
             textSize(5);
             text( "SCORE: 1000", ship.position.x, ship.position.y+10);
@@ -135,7 +137,9 @@ function draw() {
             ships.splice(ships.indexOf(ship), 1);
             ship = null;
             gameEnded = true;
+            socket.emit("savepoints", hurtShip);
             socket.emit("shipexploded", ships.indexOf(ship));
+
         }
 
 

@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 let ships = [];
 let mines = [];
 let missiles = [];
@@ -76,10 +78,25 @@ io.sockets.on(
       console.log("deleted mine");
     });
 
+    socket.on('savepoints', function(data) {
+      axios
+      .patch(`http://localhost:8080/api/v1/User/${data.name}`, {
+        actualScore: 9000
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    
+    });
+   
     socket.on('shipexploded', function(data) {
+
       ships.splice(data,1);
       console.log("deleted ship");
       console.log(ships);
+      //update score when game ends for user
+
 
     });
    

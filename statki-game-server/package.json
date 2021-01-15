@@ -9,6 +9,7 @@
   "author": "Daniel Shiffman",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "express": "^4.13.4",
     "socket.io": "^1.4.5"
   }
