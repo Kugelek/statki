@@ -28,6 +28,17 @@ class Ship {
             return false;
         }
     };
+    hitByMissile(missile){
+        var d = p5.Vector.dist(this.position, createVector(missile.x, missile.y));
+        if (d < 2 * missile.r) {
+            // var sum = PI * this.r * this.r + PI * other.r * other.r;
+            // this.r = sqrt(sum / PI);
+            //this.r += other.r;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     constrain(){
         ship.position.x = constrain(ship.position.x, -width / 4, width / 4);
@@ -38,7 +49,7 @@ class Ship {
         fill(255);
         ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
         stroke(133, 133, 133);
-        line(this.position.x, this.position.y, (mouseX - width / 2.2), (mouseY - height / 2.2));
-
+        const vec = createVector(mouseX - width / 2, mouseY - height / 2);
+        line(this.position.x, this.position.y, (mouseX - width / 2.3), (mouseY - height / 2.3));
     };
 }

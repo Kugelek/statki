@@ -5,16 +5,17 @@ let ships = [];
 let mines = [];
 let missiles = [];
 let zoom = 1;
-let xd = "xd";
 let gameEnded = false;
-
+let bg;
 /**
  * setup(), draw() keyPressed() are default P5.JS functions
  * dont change names or stuff before reading p5 docs, ty
  */
+
 const reloadPage = ( ) => window.location.reload();
 
 function setup() {
+    bg = loadImage('img/login-bg.jpg');
     createCanvas(window.innerWidth, window.innerHeight);
     socket = io.connect('http://localhost:3000');
     ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText);
@@ -36,6 +37,12 @@ function setup() {
         //console.log(data);
         mines = data;
     });
+    socket.on('heartbeatmissiles', function(data) {
+        //console.log(data);
+        missiles = data;
+    });
+
+
     socket.on('heartbeatmetheors', function(data) {
         //console.log(data);
         metheors = data;
@@ -49,8 +56,9 @@ function draw() {
     if(!ship || gameEnded){
         return;
     }
-
     background(0);
+ //   background(0);
+    background(bg);
     //console.log(ship.position.x, ship.position.y);
 
     translate(width / 2, height / 2);
@@ -80,9 +88,84 @@ function draw() {
         fill(0, 100, 100);
         rect(currentShip.x-20, currentShip.y-30, currentShip.hp/2.5, 3, 5, 5, 5, 5);
 
-
-
     });
+    for(var j = missiles.length -1; j >=0; j--){
+        fill('rgb(100%,0%,10%)');
+        // ellipse(missiles[i].pos.x+50, missiles[i].pos.y+50, missiles[i].r, misssiles[i].r);
+       // ellipse(missiles[j].x+4, missiles[j].y+4, missiles[j].r, missiles[j].r), 20;
+
+        ellipse(missiles[j].x+4, missiles[j].y+4, missiles[j].r, missiles[j].r);
+
+        // if (!ship.hitByMissile(missiles[j]))
+        //     return;
+
+        ships.forEach((singleShip, index) => {
+            if(singleShip.name === ship.name)
+                return;
+            var d = p5.Vector.dist(createVector(singleShip.x, singleShip.y), createVector(missiles[j].x, missiles[j].y));
+            console.log(d+"   odl   ");
+            if (d <   2* singleShip.r) {
+                // var sum = PI * this.r * this.r + PI * other.r * other.r;
+                // this.r = sqrt(sum / PI);
+                //this.r += other.r;
+                //missiles[j].heartbeats = 0;
+                missiles.splice(j,1);
+                singleShip.hp -= 15;
+               // singleShip.hp -=15;
+                console.log('hit');
+                let data = {
+                    ind: index,
+                    missileInd: j,
+                    x: singleShip.x,
+                    y: singleShip.y,
+                    r: singleShip.r,
+                    hp: singleShip.hp - 15,
+                    name: singleShip.name
+                };
+                socket.emit('hitenemy', data);
+
+                //return true;
+            }
+        })
+
+
+
+
+
+
+
+
+
+        // missiles.splice(currMineIndex, 1);
+
+       // if(missiles[j].heartbeats >= 0){
+           // let  mis = new Missile(missiles[j].x, missiles[j].y, missiles[j].r, missiles[j].heartbeats);
+            // missiles[j].update();
+           // mis.update();
+
+           //  missiles[j].x += 3;
+           //  missiles[j].y += 3;
+           //  missiles[j].heartbeats -= 1;
+
+           // console.log("testupdated", missiles[j].heartbeats);
+
+           //  let data = {
+           //      ind: j,
+           //      x: mis.x -3,
+           //      y: mis.y - 3,
+           //      r: mis.r,
+           //      heartbeats: mis.heartbeats -1
+           //  }
+            // socket.emit("missilesupdate", data);
+        // }else{
+        //     missiles.splice(j, 1);
+        //     console.log("usunieto",j);
+        // }
+
+
+      //  socket.emit("missiledelete", missile);
+    }
+    // socket.emit("missilesupdate", missiles);
 
     mines.forEach((currMine, currMineIndex) => {
         fill('rgb(61%,72%,73%)');
@@ -110,7 +193,6 @@ function draw() {
             console.log(hurtShip);
             socket.emit('update', hurtShip);
         }else{
-
             background(0);
             fill(20, 20, 20);
             stroke(40,40,40);
@@ -124,7 +206,6 @@ function draw() {
 
             textSize(10);
             const nickname = document.getElementById("mailvalue").innerText;
-
 
             text( `${nickname}`, ship.position.x, ship.position.y);
             textSize(5);
@@ -141,7 +222,6 @@ function draw() {
             socket.emit("shipexploded", ships.indexOf(ship));
 
         }
-
 
     });
 
@@ -162,6 +242,32 @@ function draw() {
         name: ship.name
     };
     socket.emit('update', data);
+
+    //TODO: fix
+    // if(missiles && missiles.length ){
+    //     if(missiles[0].heartbeats % 10 === 0){
+    //         socket.emit('missilesupdate', missiles);
+    //         console.log("teststrzal", missiles);
+    //     }else{
+    //         missiles[0].heartbeats -= 1;
+    //         console.log('zmniejszono ', missiles[0].heartbeats);
+    //
+    //         // missiles = missiles.map(el => {
+    //         //    return {
+    //         //     ...el,
+    //         //         x:el.x-3,
+    //         //         y: el.y-3,
+    //         //         heartbeats: el.heartbeats -1
+    //         //     }
+    //         //
+    //         // })
+    //     }
+    //
+    // }else{
+    //     console.log("puste");
+    //     socket.emit('missilesupdate', []);
+    // }
+
 }
 
 
@@ -169,6 +275,26 @@ function draw() {
 function keyPressed() {
     if(!ship)
         return;
+
+    if (keyCode === 32) {
+        //missile = new Missile(blob.pos.x, blob.pos.y, 6);
+        // missile = new Missile(random(width), random(height), random(8, 24));
+        missile = new Missile(ship.position.x, ship.position.y, 4, 50);
+        missiles.push(missile);
+        let data = {
+            x: missile.x,
+            y: missile.y,
+            r: missile.r,
+            heartbeats: missile.heartbeats,
+            destinationVectorX: missile.destinationVectorX,
+            destinationVectorY: missile.destinationVectorY
+        };
+        socket.emit('createmissile', data);
+        // console.log(missiles);
+        // console.log(blobs);
+        console.log('spacja');
+    }
+
     if(keyCode === ENTER){
         mine = new Mine(ship.position.x+20, ship.position.y+20, 9);
         console.log(mine);
