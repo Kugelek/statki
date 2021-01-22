@@ -21,8 +21,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
+				<a class="navbar-brand" href="#" th:href="@{/}">Registration and Login Module</a>
 			</div>
 		</div>
 	</nav>
@@ -42,35 +41,36 @@
 
 				<h1>Registration</h1>
 
-				<form th:action="@{/registration}" method="post" th:object="${user}">
+				<form th:action="@{/registration/check}" method="post" th:object="${user}">
 					<div class="form-group">
 						<label class="control-label" for="firstName"> First Name </label>
-						<input id="firstName" class="form-control" th:field="*{firstName}"
-							required autofocus="autofocus" />
+						<input id="firstName" class="form-control" th:field="*{firstName}" required pattern="[A-Z][A-z]+" autofocus="autofocus" />
+						<div class="form-text" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error</div>
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="lastName"> Last Name </label> <input
-							id="lastName" class="form-control" th:field="*{lastName}"
-							required autofocus="autofocus" />
+						<label class="control-label" for="lastName"> Last Name </label>
+						<input id="lastName" class="form-control" th:field="*{lastName}" required pattern="[A-Z][A-z]+" autofocus="autofocus" />
+						<div class="form-text" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error</div>
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="email"> Email </label> <input
-							id="email" class="form-control" th:field="*{email}" required
-							autofocus="autofocus" />
+						<label class="control-label" for="email"> Email </label>
+						<input id="email" class="form-control" th:field="*{email}" required	pattern="^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$" autofocus="autofocus" />
+						<div class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
 					</div>
 
 					<div class="form-group">
-						<label class="control-label" for="password"> Password </label> <input
-							id="password" class="form-control" type="password"
-							th:field="*{password}" required autofocus="autofocus" />
+						<label class="control-label" for="password"> Password </label>
+						<input id="password" class="form-control" type="password" th:field="*{password}" required minlength="7" pattern="^[A-z]*[0-9]+[A-z]*$" maxlength="100" autofocus="autofocus" />
+						<div class="form-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
 					</div>
 
 					<div class="form-group">
 						<button type="submit" class="btn btn-success">Register</button>
-						<span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
+						<span>Already registered? <a href="/" th:href="@{/login}">
+							Login here</a>
+						</span>
 					</div>
 				</form>
 			</div>
