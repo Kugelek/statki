@@ -6,13 +6,14 @@ let missiles = [];
 
 
 class Ship {
-  constructor(id, x, y, r, hp, name){
+  constructor(id, x, y, r, hp, name, points){
     this.id = id;
     this.x = x;
     this.y = y;
     this.r = r;
     this.hp = hp;
     this.name = name;
+    this.points = points;
   }
 }
 
@@ -67,7 +68,7 @@ io.sockets.on(
 
     socket.on('start', function(data) {
       console.log("starcik", socket.id + ' ' + data.x + ' ' + data.y + ' ' + data.r);
-      ships.push(new Ship(socket.id, data.x, data.y, data.r, data.hp, data.name));
+      ships.push(new Ship(socket.id, data.x, data.y, data.r, data.hp, data.name, data.points));
     });
 
     socket.on('update', function(data) {
@@ -81,6 +82,7 @@ io.sockets.on(
         ship.r = data.r;
         ship.hp = data.hp;
         ship.name = data.name;
+        // ship.points = data.points;
       }
     
     });
@@ -141,6 +143,7 @@ io.sockets.on(
         x: "",
         y: "",
         r: "",
+        ownerName: "",
         heartbeats: "",
         destinationVectorX: "",
         destinationVectorY: ""
@@ -149,6 +152,7 @@ io.sockets.on(
       missile.x = data.x;
       missile.y = data.y;
       missile.r = data.r;
+      missile.ownerName = data.ownerName;
       missile.heartbeats = data.heartbeats;
       missile.destinationVectorX = data.destinationVectorX;
       missile.destinationVectorY = data.destinationVectorY;
@@ -183,13 +187,23 @@ io.sockets.on(
       //update score when game ends for user
     });
     socket.on('hitenemy', function(data) {
+      let killer;
+      let killingMissile;
       if(ships[data.ind]){
         ships[data.ind].hp = data.hp;
+       // missiles.forEach(m => console.log(m.ownerName));
+        if(missiles[data.missileInd]){
+          killingMissile = missiles[data.missileInd].ownerName;
+          killer = ships.filter(s => s.name === killingMissile )[0];
+        }
         missiles.splice(data.missileInd, 1);
         if(data.hp <= 0){
+          if(killer)
+            killer.points += 1000;
           ships.splice(data.ind, 1);
           console.log("hit enemy destroyed");
-        }
+        //   console.log("KP", ships.filter(s => s.name === missiles[data.missileInd].ownerName)[0].points);
+         }
        
       }
       // ships.splice(data,1);

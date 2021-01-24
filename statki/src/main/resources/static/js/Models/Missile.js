@@ -1,9 +1,10 @@
 
 class Missile {
-    constructor(x, y, r, heartbeats){
+    constructor(x, y, r, ownerName, heartbeats){
         this.x = x;
         this.y = y;
         this.r = r;
+        this.ownerName = ownerName;
         this.heartbeats = heartbeats;
       //  this.vel = createVector(mouseX - this.x, mouseY - this.y).normalize();
         this.vel = createVector(mouseX - width / 2, mouseY - height / 2);

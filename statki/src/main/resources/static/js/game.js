@@ -18,14 +18,15 @@ function setup() {
     bg = loadImage('img/login-bg.jpg');
     createCanvas(window.innerWidth, window.innerHeight);
     socket = io.connect('http://localhost:3000');
-    ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText);
+    ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText, 0);
 
     let data = {
         x: ship.position.x,
         y: ship.position.y,
         r: ship.r,
         hp: ship.hp,
-        name: ship.name
+        name: ship.name,
+        points: ship.points
     };
     socket.emit('start', data);
 
@@ -57,9 +58,7 @@ function draw() {
         return;
     }
     background(0);
- //   background(0);
     background(bg);
-    //console.log(ship.position.x, ship.position.y);
 
     translate(width / 2, height / 2);
     let newzoom = 64 / ship.r;
@@ -68,8 +67,13 @@ function draw() {
     translate(-ship.position.x, -ship.position.y);
 
     ships.forEach(currentShip => {
-        if (currentShip.id.substring(2, currentShip.id.length) === socket.id){
-            return;
+        // if (currentShip.id.substring(2, currentShip.id.length) === socket.id){
+        //     console.log("DONEcasfasfs");
+        //     text("Punkty xd"+currentShip.name, currentShip.x - 500, currentShip.y - 50);
+        //     return;
+        // }
+        if (currentShip.name === ship.name){
+            text("Points "+currentShip.points, currentShip.x - 100, currentShip.y+45);
         }
 
         fill(0, 100, 100);
@@ -83,6 +87,7 @@ function draw() {
         textAlign(CENTER);
         textSize(4);
         text( currentShip.name, currentShip.x, currentShip.y + 1.5 * currentShip.r);
+
 
         rect(currentShip.x-20, currentShip.y-30, 40, 3, 5, 5, 5, 5);
         fill(0, 100, 100);
@@ -120,21 +125,14 @@ function draw() {
                     y: singleShip.y,
                     r: singleShip.r,
                     hp: singleShip.hp - 15,
-                    name: singleShip.name
+                    name: singleShip.name,
+                    points: singleShip.points
                 };
                 socket.emit('hitenemy', data);
 
                 //return true;
             }
         })
-
-
-
-
-
-
-
-
 
         // missiles.splice(currMineIndex, 1);
 
@@ -187,7 +185,8 @@ function draw() {
             y: ship.position.y,
             r: ship.r,
             hp: ship.hp,
-            name: ship.name
+            name: ship.name,
+            points: ship.points,
         };
         if(ship && ship.hp > 0){
             console.log(hurtShip);
@@ -239,34 +238,10 @@ function draw() {
         y: ship.position.y,
         r: ship.r,
         hp: ship.hp,
-        name: ship.name
+        name: ship.name,
+        points: ship.points
     };
     socket.emit('update', data);
-
-    //TODO: fix
-    // if(missiles && missiles.length ){
-    //     if(missiles[0].heartbeats % 10 === 0){
-    //         socket.emit('missilesupdate', missiles);
-    //         console.log("teststrzal", missiles);
-    //     }else{
-    //         missiles[0].heartbeats -= 1;
-    //         console.log('zmniejszono ', missiles[0].heartbeats);
-    //
-    //         // missiles = missiles.map(el => {
-    //         //    return {
-    //         //     ...el,
-    //         //         x:el.x-3,
-    //         //         y: el.y-3,
-    //         //         heartbeats: el.heartbeats -1
-    //         //     }
-    //         //
-    //         // })
-    //     }
-    //
-    // }else{
-    //     console.log("puste");
-    //     socket.emit('missilesupdate', []);
-    // }
 
 }
 
@@ -279,12 +254,13 @@ function keyPressed() {
     if (keyCode === 32) {
         //missile = new Missile(blob.pos.x, blob.pos.y, 6);
         // missile = new Missile(random(width), random(height), random(8, 24));
-        missile = new Missile(ship.position.x, ship.position.y, 4, 50);
+        missile = new Missile(ship.position.x, ship.position.y, 4, ship.name,50);
         missiles.push(missile);
         let data = {
             x: missile.x,
             y: missile.y,
             r: missile.r,
+            ownerName: missile.ownerName,
             heartbeats: missile.heartbeats,
             destinationVectorX: missile.destinationVectorX,
             destinationVectorY: missile.destinationVectorY

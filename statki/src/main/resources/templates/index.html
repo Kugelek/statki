@@ -9,52 +9,31 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/topbar.css" type="text/css"/>
 	<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 	<script type="text/javascript" src="/js/game.js"></script>
 	<script type="text/javascript" src="/js/Models/Ship.js"></script>
 	<script type="text/javascript" src="/js/Models/Mine.js"></script>
 	<script type="text/javascript" src="/js/Models/Missile.js"></script>
 	<script language="javascript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"></script>
-
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
 	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
+	<nav class="customnavbar navbar-fixed-top">
+			<a class="customnavbar__home" href="#" th:href="@{/}">
+				<img class="customnavbar__logo" src="/img/logo.png" alt="logo"/>
+				<h1 class="customnavbar__heading" >TeamShips.io</h1>
+			</a>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+					<li>Logged in as <span id="mailvalue" sec:authentication="principal.username"> User</span></li>
 				</ul>
-				Welcome <span id="mailvalue" sec:authentication="principal.username"> User</span>
-                <!--<span id="idvalue" sec:authentication="principal."> Id</span>-->
 			</div>
-
-		</div>
 	</nav>
 
-	<br>
-	<br>
-
-
-	<!--<script th:inline="javascript">-->
-
-
-
-
-
-		<!--/*]]>*/-->
-	<!--</script>-->
 </body>
 </html>

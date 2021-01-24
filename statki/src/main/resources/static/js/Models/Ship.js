@@ -1,11 +1,12 @@
 class Ship {
 
-    constructor(x, y, r, hp, name){
+    constructor(x, y, r, hp, name, points){
         this.position = createVector(x, y);
         this.r = r;
         this.velocity = createVector(0, 0);
         this.hp = hp;
         this.name = name;
+        this.points = points;
     }
 
     update(){
