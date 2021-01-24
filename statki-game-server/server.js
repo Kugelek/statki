@@ -3,6 +3,11 @@ const axios = require('axios');
 let ships = [];
 let mines = [];
 let missiles = [];
+let metheors = [];
+let gameSettings = {
+  width: 0,
+  height: 0
+}
 
 
 class Ship {
@@ -49,17 +54,36 @@ const updateMissiles = async () =>{
       });
     
   }
-  
 } 
 
+const refillMetheors = () => {
+  const refillAmount = 20 - metheors.length;
+  for(var i = 0; i < refillAmount; i++){
+    let randomRadius = Math.random() * (19 - 10) + 10;
+
+    metheors.push({
+      // x: Math.random() * gameSettings.width/4,
+      // y: Math.random() * gameSettings.height/4,
+      x: Math.random() * 500 -300,
+      y: Math.random() * 300 - 200,
+      r: randomRadius,
+      hp: 100,
+      pointsToGet: randomRadius * 10
+    })
+  }
+
+}
 function heartbeat() {
   io.sockets.emit('heartbeat', ships);
   io.sockets.emit('heartbeatmines', mines);
   io.sockets.emit('heartbeatmissiles', missiles);
+  io.sockets.emit('heartbeatmetheors', metheors);
+ 
 }
 
 setInterval(heartbeat, 33);
 setInterval(updateMissiles, 10);
+setInterval(refillMetheors, 3000)
 
 io.sockets.on(
   'connection',
@@ -68,6 +92,10 @@ io.sockets.on(
 
     socket.on('start', function(data) {
       console.log("starcik", socket.id + ' ' + data.x + ' ' + data.y + ' ' + data.r);
+      gameSettings = {
+        width: data.gameWidth,
+        height: data.gameHeight
+      }
       ships.push(new Ship(socket.id, data.x, data.y, data.r, data.hp, data.name, data.points));
     });
 

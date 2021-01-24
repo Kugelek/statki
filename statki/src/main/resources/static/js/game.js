@@ -4,6 +4,7 @@ let ship;
 let ships = [];
 let mines = [];
 let missiles = [];
+let metheors = [];
 let zoom = 1;
 let gameEnded = false;
 let bg;
@@ -20,13 +21,16 @@ function setup() {
     socket = io.connect('http://localhost:3000');
     ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText, 0);
 
+
     let data = {
         x: ship.position.x,
         y: ship.position.y,
         r: ship.r,
         hp: ship.hp,
         name: ship.name,
-        points: ship.points
+        points: ship.points,
+        gameWidth: width,
+        gameHeight: height
     };
     socket.emit('start', data);
 
@@ -66,6 +70,15 @@ function draw() {
     scale(zoom);
     translate(-ship.position.x, -ship.position.y);
 
+    metheors.forEach(currentMetheor => {
+
+        fill(250, 215, 28);
+        ellipse(
+            currentMetheor.x,
+            currentMetheor.y,
+            currentMetheor.r * 2,
+            currentMetheor.r * 2);
+    })
     ships.forEach(currentShip => {
         // if (currentShip.id.substring(2, currentShip.id.length) === socket.id){
         //     console.log("DONEcasfasfs");
