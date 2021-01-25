@@ -3,8 +3,10 @@ package com.projekt.statki.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Setter
@@ -17,14 +19,23 @@ public class User {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull(message = "First name cannot be empty!")
+	@Pattern(regexp = "[A-Z][A-z]+", message = "Invalid first name!")
 	@Column(name = "first_name")
 	private String firstName;
 
+	@NotNull(message = "Last name cannot be empty!")
+	@Pattern(regexp = "[A-Z][A-z]+", message = "Invalid last name!")
 	@Column(name = "last_name")
 	private String lastName;
 
+	@NotNull(message = "Email cannot be empty!")
+	@Pattern(regexp = "^([a-zA-Z0-9_\\-.]+)@([a-zA-Z0-9_\\-.]+)\\.([a-zA-Z]{2,5})$", message = "Invalid email!")
 	private String email;
 
+	@NotNull(message = "Password cannot be empty!")
+	@Min(7)
+	@Pattern(regexp = "^[A-z]*[0-9]+[A-z]*$", message = "Invalid Password!")
 	private String password;
 
 	@JsonProperty("highScore")
@@ -32,7 +43,6 @@ public class User {
 
 	@JsonProperty("actualScore")
 	private Long actualScore;
-
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
@@ -44,9 +54,7 @@ public class User {
 
 	private Collection<Role> roles;
 
-	public User() {
-
-	}
+	public User() {}
 
 	public User(String firstName, String lastName, String email, String password, @JsonProperty("highScore") Long highScore, @JsonProperty("actualScore") Long actualScore, Collection<Role> roles) {
 		this.firstName = firstName;
@@ -68,6 +76,4 @@ public class User {
 		this.highScore = 0L;
 		this.actualScore = 0L;
 	}
-
-
 }
