@@ -1,10 +1,10 @@
-class Mine {
-    constructor(x, y, r){
+class Metheor {
+    constructor(x, y, r, hp){
         this.x = x;
         this.y=y;
         this.r = r;
-        this.position = createVector(x, y);
-        this.vel = createVector(0, 0);
+        this.hp = hp;
+        this.pointsToGet = r*10;
     }
 
     show () {
