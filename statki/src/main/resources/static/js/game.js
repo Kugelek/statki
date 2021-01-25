@@ -86,7 +86,7 @@ function draw() {
         //     return;
         // }
         if (currentShip.name === ship.name){
-            text("Points "+currentShip.points, currentShip.x - 100, currentShip.y+45);
+            text("Points "+Math.floor(currentShip.points), currentShip.x - 100, currentShip.y+45);
         }
 
         fill(0, 100, 100);
@@ -144,6 +144,27 @@ function draw() {
                 socket.emit('hitenemy', data);
 
                 //return true;
+            }
+        });
+        metheors.forEach((singleMetheor,index) => {
+            if(!singleMetheor || !singleMetheor.x || !missiles[j])
+                return;
+            var d = p5.Vector.dist(createVector(singleMetheor.x, singleMetheor.y), createVector(missiles[j].x, missiles[j].y));
+            if (d < 1.3 * singleMetheor.r) {
+                missiles.splice(j,1);
+                singleMetheor.hp -= 15;
+                singleMetheor.r -= 0.5;
+                console.log('hitmetheor');
+                let data = {
+                    ind: index,
+                    missileInd: j,
+                    x: singleMetheor.x,
+                    y: singleMetheor.y,
+                    r: singleMetheor.r -0.5,
+                    hp: singleMetheor.hp - 15,
+                    pointsToGet: singleMetheor.pointsToGet
+                };
+                socket.emit('hitmetheor', data);
             }
         })
 

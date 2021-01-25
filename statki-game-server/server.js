@@ -241,6 +241,34 @@ io.sockets.on(
 
 
     });
+
+    socket.on('hitmetheor', function(data) {
+      let killer;
+      let killingMissile;
+      if(metheors[data.ind]){
+        metheors[data.ind].hp = data.hp;
+        metheors[data.ind].r = data.r;
+        if(missiles[data.missileInd]){
+          killingMissile = missiles[data.missileInd].ownerName;
+          killer = ships.filter(s => s.name === killingMissile )[0];
+        }
+        missiles.splice(data.missileInd, 1);
+        if(data.hp <= 0){
+          if(killer)
+            killer.points += data.pointsToGet;
+          metheors.splice(data.ind, 1);
+          console.log("hit metheor destroyed");
+        //   console.log("KP", ships.filter(s => s.name === missiles[data.missileInd].ownerName)[0].points);
+         }
+       
+      }
+      // ships.splice(data,1);
+      console.log("hit metheor");
+      //console.log(ships);
+      //update score when game ends for user
+
+
+    });
    
 
     socket.on('disconnect', function() {
