@@ -1,12 +1,22 @@
 
 class Missile {
-    construcor(x, y, r, heartbeats){
+    constructor(x, y, r, ownerName, heartbeats){
         this.x = x;
         this.y = y;
         this.r = r;
+        this.ownerName = ownerName;
         this.heartbeats = heartbeats;
-        this.vel = createVector(0, 0);
-    }
+      //  this.vel = createVector(mouseX - this.x, mouseY - this.y).normalize();
+        this.vel = createVector(mouseX - width / 2, mouseY - height / 2);
+        this.destinationVectorX = (this.vel.x);
+        this.destinationVectorY = (this.vel.y);
+        // console.log("CONSTRUCOR MISSILE");
+        // console.log(this.destinationVectorX+ " vec  "+this.destinationVectorY);
+        // console.log(this.mouseX+ " mouses  "+this.mouseY);
+        // console.log(this.x+ " shipcoodrd  "+this.y);
+        // this.destinationVectorX = (mouseX - this.x);
+        // this.destinationVectorY = (mouseY - this.y);
+}
 
     // constrain() {
     //   missile.pos.x = constrain(missile.pos.x, -width / 4, width / 4);
