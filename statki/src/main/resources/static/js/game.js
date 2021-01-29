@@ -5,6 +5,7 @@ let ships = [];
 let mines = [];
 let missiles = [];
 let metheors = [];
+let myPoints = 0;
 let zoom = 1;
 let gameEnded = false;
 let bg;
@@ -17,7 +18,7 @@ const reloadPage = ( ) => window.location.reload();
 
 function setup() {
     bg = loadImage('img/login-bg.jpg');
-    createCanvas(window.innerWidth, window.innerHeight);
+    createCanvas(window.innerWidth -15, window.innerHeight -15);
     socket = io.connect('http://localhost:3000');
     ship = new Ship(random(width), random(height), 15, 100, document.getElementById("mailvalue").innerText, 0);
 
@@ -86,6 +87,7 @@ function draw() {
         //     return;
         // }
         if (currentShip.name === ship.name){
+            myPoints = Math.floor(currentShip.points)
             text("Points "+Math.floor(currentShip.points), currentShip.x - 100, currentShip.y+45);
         }
 
@@ -226,6 +228,14 @@ function draw() {
             console.log(hurtShip);
             socket.emit('update', hurtShip);
         }else{
+
+            var tempShip = ships
+                .filter(currentShip => currentShip.name === ship.name);
+            var tempData = {
+                name: ship.name,
+                points: myPoints,
+            }
+
             background(0);
             fill(20, 20, 20);
             stroke(40,40,40);
@@ -235,23 +245,25 @@ function draw() {
             fill(240, 240, 240);
             textAlign(CENTER);
             textSize(16);
-            text( "GAME OVERRR", ship.position.x, ship.position.y-20);
+            text( "GAME OVER", ship.position.x, ship.position.y-20);
 
             textSize(10);
             const nickname = document.getElementById("mailvalue").innerText;
 
             text( `${nickname}`, ship.position.x, ship.position.y);
             textSize(5);
-            text( "SCORE: 1000", ship.position.x, ship.position.y+10);
+            text( `SCORE ${myPoints}`, ship.position.x, ship.position.y+15);
 
             button = createButton('Try again!');
-            button.position(ship.position.x, ship.position.y+25);
+            button.position(ship.position.x+200, ship.position.y+300);
             button.mousePressed(reloadPage);
 
             ships.splice(ships.indexOf(ship), 1);
             ship = null;
             gameEnded = true;
-            socket.emit("savepoints", hurtShip);
+
+
+            socket.emit("savepoints", tempData);
             socket.emit("shipexploded", ships.indexOf(ship));
 
         }

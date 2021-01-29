@@ -5,6 +5,7 @@ import com.projekt.statki.repository.UserRepository;
 import com.projekt.statki.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class UserRestController {
                 .orElse(null);
 
     }
-
+    @Transactional
     @DeleteMapping(path = "{id}")
     public void deleteUserById(@PathVariable("id") Long id) {
         userRepository.deleteUserById(id);

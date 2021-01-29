@@ -51,6 +51,6 @@ class Ship {
         ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
         stroke(133, 133, 133);
         const vec = createVector(mouseX - width / 2, mouseY - height / 2);
-        line(this.position.x, this.position.y, (mouseX - width / 2.3), (mouseY - height / 2.3));
+        // line(this.position.x, this.position.y, (mouseX - width / 2.3), (mouseY - height / 2.3));
     };
 }
