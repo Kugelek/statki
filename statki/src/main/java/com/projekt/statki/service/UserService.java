@@ -11,4 +11,6 @@ public interface UserService extends UserDetailsService {
 	User save(UserRegistrationDto registrationDto);
 
 	User updateScore(User user, Long score);
+
+	User updateLastSessionStart(String email);
 }

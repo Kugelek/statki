@@ -54,10 +54,11 @@ public class UserRestController {
 //        User userToFind = userRepository.findById(id).orElseThrow(null);
 //        userService.updateScore(userToFind, user.getActualScore());
 //    }
-@PatchMapping(path = "{mail}")
-public void updateUser(@PathVariable("mail") String mail, @Validated @NonNull @RequestBody User user) {
 
-    User userToFind = userRepository.findByEmail(mail);
-    userService.updateScore(userToFind, user.getActualScore());
-}
+    @PatchMapping(path = "{mail}")
+    public void updateUser(@PathVariable("mail") String mail, @Validated @NonNull @RequestBody User user) {
+
+        User userToFind = userRepository.findByEmail(mail);
+        userService.updateScore(userToFind, user.getActualScore());
+    }
 }
