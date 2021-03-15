@@ -31,6 +31,7 @@
                         <th class="text">Last name</th>
                         <th class="text">Email</th>
                         <th class="text">High Score</th>
+                        <th class="text">Death Count</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@
                         <td th:text="${user.getLastName()}"></td>
                         <td th:text="${user.getEmail()}"></td>
                         <td th:text="${user.getHighScore()}"></td>
+                        <td th:text="${user.getDeathsCount()}"></td>
                         </tr>
                     </tbody>
                 </table>
