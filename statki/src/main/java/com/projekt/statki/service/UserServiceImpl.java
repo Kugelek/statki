@@ -70,5 +70,12 @@ public class UserServiceImpl implements UserService{
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
-	
+
+	@Override
+	public User saveAdmin(UserRegistrationDto registrationDto) {
+		User user = new User(registrationDto.getFirstName(),
+				registrationDto.getLastName(), registrationDto.getEmail(),
+				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_ADMIN")));
+		return userRepository.save(user);
+	}
 }

@@ -4,6 +4,7 @@ import com.projekt.statki.model.Statek;
 import com.projekt.statki.service.StatekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
