@@ -44,6 +44,16 @@ public class User {
 	@JsonProperty("actualScore")
 	private Long actualScore;
 
+	//time in miliseconds
+	@JsonProperty("playTime")
+	private Long playTime = 0L;
+
+	@JsonProperty("lastSessionStart")
+	private Long lastSessionStart;
+
+	@JsonProperty("deathsCount")
+	private Long deathsCount = 0L;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "users_roles",
@@ -63,6 +73,8 @@ public class User {
 		this.password = password;
 		this.highScore = highScore;
 		this.actualScore = actualScore;
+		this.playTime = 0L;
+		this.deathsCount = 0L;
 		this.roles = roles;
 	}
 
@@ -75,5 +87,18 @@ public class User {
 		this.roles = roles;
 		this.highScore = 0L;
 		this.actualScore = 0L;
+		this.playTime = 0L;
+		this.deathsCount = 0L;
+	}
+
+	public void increasePlayTime() {
+		if (lastSessionStart != null && lastSessionStart != 0) {
+			playTime += (System.currentTimeMillis() - lastSessionStart);
+			lastSessionStart = System.currentTimeMillis();
+		}
+	}
+
+	public void increaseDeathCount() {
+		this.deathsCount++;
 	}
 }

@@ -43,10 +43,17 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User updateScore(User user, Long actualScore) {
-		if (user.getHighScore() < actualScore) {
+		if (user.getHighScore() < actualScore)
 			user.setHighScore(actualScore);
-		}
+		user.increasePlayTime();
+		user.increaseDeathCount();
+		return userRepository.save(user);
+	}
 
+	@Override
+	public User updateLastSessionStart(String email) {
+		User user = userRepository.findByEmail(email);
+		user.setLastSessionStart(System.currentTimeMillis());
 		return userRepository.save(user);
 	}
 
