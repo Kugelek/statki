@@ -4,7 +4,7 @@ class MetheorRefiller {
   refillBoard(metheors) {
     const refillAmount = 20 - metheors.length;
     for (var i = 0; i < refillAmount; i++) {
-      let randomRadius = Math.random() * (19 - 10) + 10;
+      let randomRadius = Math.random() * 10 + 10;
 
       metheors.push({
         // x: Math.random() * gameSettings.width/4,
