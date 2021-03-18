@@ -17,7 +17,25 @@ public class UserController {
 
     @GetMapping("/users")
     public String home(Model model) {
-        model.addAttribute("userList", userRepository.findAll());
+        model.addAttribute("userList", userRepository.findAllByOrderByIdAsc());
         return "users";
+    }
+
+    @GetMapping("/stats/score")
+    public String score(Model model) {
+        model.addAttribute("userList", userRepository.findTop5ByOrderByHighScoreDesc());
+        return "score";
+    }
+
+    @GetMapping("/stats/deaths")
+    public String deaths(Model model) {
+        model.addAttribute("userList", userRepository.findTop5ByOrderByDeathsCountDesc());
+        return "deaths";
+    }
+
+    @GetMapping("/stats/playtime")
+    public String playtime(Model model) {
+        model.addAttribute("userList", userRepository.findTop5ByOrderByPlayTimeDesc());
+        return "playtime";
     }
 }
