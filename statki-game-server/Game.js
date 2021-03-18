@@ -1,26 +1,18 @@
 const axios = require("axios");
 const gameSettings = require("./config/gameSettings");
 const { Server } = require("./Server");
+const { Ship } = require("./Ship");
+const { MetheorRefiller } = require("./MetheorRefiller");
 const server = new Server();
 
 let io = require("socket.io")(server.httpServer);
+
+const refiller = new MetheorRefiller();
 
 let ships = [];
 let mines = [];
 let missiles = [];
 let metheors = [];
-
-class Ship {
-  constructor(id, x, y, r, hp, name, points) {
-    this.id = id;
-    this.x = x;
-    this.y = y;
-    this.r = r;
-    this.hp = hp;
-    this.name = name;
-    this.points = points;
-  }
-}
 
 const updateMissiles = async () => {
   if (missiles.length) {
@@ -33,22 +25,6 @@ const updateMissiles = async () => {
   }
 };
 
-const refillMetheors = () => {
-  const refillAmount = 20 - metheors.length;
-  for (var i = 0; i < refillAmount; i++) {
-    let randomRadius = Math.random() * (19 - 10) + 10;
-
-    metheors.push({
-      // x: Math.random() * gameSettings.width/4,
-      // y: Math.random() * gameSettings.height/4,
-      x: Math.random() * 500 - 300,
-      y: Math.random() * 300 - 200,
-      r: randomRadius,
-      hp: 100,
-      pointsToGet: randomRadius * 10,
-    });
-  }
-};
 function heartbeat() {
   io.sockets.emit("heartbeat", ships);
   io.sockets.emit("heartbeatmines", mines);
@@ -58,20 +34,12 @@ function heartbeat() {
 
 setInterval(heartbeat, 33);
 setInterval(updateMissiles, 10);
-setInterval(refillMetheors, 3000);
+setInterval(() => refiller.refillBoard(metheors), 3000);
 
 io.sockets.on("connection", function (socket) {
   console.log("new client: " + socket.id);
 
-  socket.on("start", function (data) {
-    console.log(
-      "starcik",
-      socket.id + " " + data.x + " " + data.y + " " + data.r
-    );
-    // gameSettings = {
-    //   width: data.gameWidth,
-    //   height: data.gameHeight,
-    // };
+  socket.on("start", (data) => {
     ships.push(
       new Ship(
         socket.id,
@@ -106,14 +74,11 @@ io.sockets.on("connection", function (socket) {
       y: "",
       r: "",
     };
-    console.log(data);
     mine.x = data.x;
     mine.y = data.y;
     mine.r = data.r;
 
     mines.push(mine);
-    console.log("created");
-    console.log(mine);
   });
 
   socket.on("createmissile", function (data) {
@@ -126,7 +91,6 @@ io.sockets.on("connection", function (socket) {
       destinationVectorX: "",
       destinationVectorY: "",
     };
-    console.log(data);
     missile.x = data.x;
     missile.y = data.y;
     missile.r = data.r;
@@ -144,9 +108,6 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("savepoints", function (data) {
-    console.log("SAVE ATTEMPT");
-    console.log(data.name);
-    console.log(data.points);
     axios
       .patch(`http://localhost:8080/api/v1/User/${data.name}`, {
         actualScore: data.points,
@@ -175,11 +136,8 @@ io.sockets.on("connection", function (socket) {
       if (data.hp <= 0) {
         if (killer) killer.points += 1000;
         ships.splice(data.ind, 1);
-        console.log("hit enemy destroyed");
       }
     }
-
-    console.log("hit enemy");
   });
 
   socket.on("hitmetheor", function (data) {
