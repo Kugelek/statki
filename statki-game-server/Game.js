@@ -30,6 +30,7 @@ setInterval(() => refiller.refillBoard(metheors), 3000);
 
 io.sockets.on("connection", (socket) => {
   socket.on("start", (data) => {
+    ships = ships.filter((ship) => ship.name !== data.name);
     ships.push(
       new Ship(
         socket.id,
