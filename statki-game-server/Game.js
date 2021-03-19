@@ -28,9 +28,7 @@ setInterval(emitHeartbeats, 33);
 setInterval(() => missileUpdater.updateMissiles(missiles), 10);
 setInterval(() => refiller.refillBoard(metheors), 3000);
 
-io.sockets.on("connection", function (socket) {
-  console.log("new client: " + socket.id);
-
+io.sockets.on("connection", (socket) => {
   socket.on("start", (data) => {
     ships.push(
       new Ship(
@@ -48,7 +46,6 @@ io.sockets.on("connection", function (socket) {
   socket.on("update", function (data) {
     let ship = ships.filter((el) => el.id === socket.id)[0];
     if (!ship) return;
-
     ship.x = data.x;
     ship.y = data.y;
     ship.r = data.r;
@@ -89,16 +86,19 @@ io.sockets.on("connection", function (socket) {
     ships.splice(explodedShipIndex, 1);
   });
 
+  const findKiller = (missileIndex) => {
+    const killingMissile = missiles[missileIndex].ownerName;
+    return ships.filter((ship) => ship.name === killingMissile)[0];
+  };
+
   socket.on("hitenemy", function (data) {
     let killer;
-    let killingMissile;
 
     if (!ships[data.ind]) return;
 
     ships[data.ind].hp = data.hp;
     if (missiles[data.missileInd]) {
-      killingMissile = missiles[data.missileInd].ownerName;
-      killer = ships.filter((s) => s.name === killingMissile)[0];
+      killer = findKiller(data.missileInd);
     }
 
     missiles.splice(data.missileInd, 1);
@@ -110,19 +110,20 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("hitmetheor", function (data) {
     let killer;
-    let killingMissile;
-    if (metheors[data.ind]) {
-      metheors[data.ind].hp = data.hp;
-      metheors[data.ind].r = data.r;
-      if (missiles[data.missileInd]) {
-        killingMissile = missiles[data.missileInd].ownerName;
-        killer = ships.filter((s) => s.name === killingMissile)[0];
-      }
-      missiles.splice(data.missileInd, 1);
-      if (data.hp <= 0) {
-        if (killer) killer.points += data.pointsToGet;
-        metheors.splice(data.ind, 1);
-      }
+
+    if (!metheors[data.ind]) return;
+
+    metheors[data.ind].hp = data.hp;
+    metheors[data.ind].r = data.r;
+
+    if (missiles[data.missileInd]) {
+      killer = findKiller(data.missileInd);
+    }
+
+    missiles.splice(data.missileInd, 1);
+    if (data.hp <= 0) {
+      if (killer) killer.points += data.pointsToGet;
+      metheors.splice(data.ind, 1);
     }
   });
 
