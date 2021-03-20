@@ -3,7 +3,7 @@ class MissilesLocationUpdater {
     //tba global speed
   }
 
-  async updateMissiles(missiles) {
+  updateMissiles(missiles) {
     if (!missiles.length) return;
     missiles = missiles.filter((el) => el.heartbeats > 0);
     missiles.forEach((missile, ind) => {
@@ -11,6 +11,7 @@ class MissilesLocationUpdater {
       missile.y += missile.destinationVectorY / 100;
       missile.heartbeats -= 0.3;
     });
+    return missiles;
   }
 }
 

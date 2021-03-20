@@ -17,7 +17,7 @@ const reloadPage = () => window.location.reload();
 
 function setup() {
   bg = loadImage("img/login-bg.jpg");
-  createCanvas(window.innerWidth - 15, window.innerHeight - 15);
+  createCanvas(window.innerWidth, window.innerHeight);
   socket = io.connect("http://localhost:3000");
   ship = new Ship(
     random(width),
@@ -28,7 +28,7 @@ function setup() {
     0
   );
 
-  let data = {
+  socket.emit("start", {
     x: ship.position.x,
     y: ship.position.y,
     r: ship.r,
@@ -37,8 +37,7 @@ function setup() {
     points: ship.points,
     gameWidth: width,
     gameHeight: height,
-  };
-  socket.emit("start", data);
+  });
 
   socket.on("heartbeat", (verifiedShips) => {
     ships = verifiedShips;
@@ -80,41 +79,59 @@ function draw() {
   });
   ships.forEach((currentShip) => {
     if (currentShip.name === ship.name) {
-      myPoints = Math.floor(currentShip.points);
-      text(
-        "Points " + Math.floor(currentShip.points),
-        currentShip.x - 100,
-        currentShip.y + 45
-      );
+      ship.points = currentShip.points;
+      ship.hp = currentShip.hp;
     }
 
     fill(0, 100, 100);
     ellipse(currentShip.x, currentShip.y, currentShip.r * 2, currentShip.r * 2);
 
-    fill(255);
-    textAlign(CENTER);
-    textSize(4);
-    text(currentShip.name, currentShip.x, currentShip.y + 1.5 * currentShip.r);
+    if (currentShip.name !== ship.name) {
+      fill(255);
+      textAlign(CENTER);
+      textSize(4);
+      text(
+        currentShip.name,
+        currentShip.x,
+        currentShip.y + 1.5 * currentShip.r
+      );
 
-    rect(currentShip.x - 20, currentShip.y - 30, 40, 3, 5, 5, 5, 5);
-    fill(0, 100, 100);
-    rect(
-      currentShip.x - 20,
-      currentShip.y - 30,
-      currentShip.hp / 2.5,
-      3,
-      5,
-      5,
-      5,
-      5
-    );
+      rect(currentShip.x - 20, currentShip.y - 30, 40, 3, 5, 5, 5, 5);
+      fill(0, 100, 100);
+      rect(
+        currentShip.x - 20,
+        currentShip.y - 30,
+        currentShip.hp / 2.5,
+        3,
+        5,
+        5,
+        5,
+        5
+      );
+    }
+
+    // rect(currentShip.x - 20, currentShip.y - 30, 40, 3, 5, 5, 5, 5);
+    // fill(0, 100, 100);
+    // rect(
+    //   currentShip.x - 20,
+    //   currentShip.y - 30,
+    //   currentShip.hp / 2.5,
+    //   3,
+    //   5,
+    //   5,
+    //   5,
+    //   5
+    // );
   });
   for (var j = missiles.length - 1; j >= 0; j--) {
     fill("rgb(100%,0%,10%)");
-    // ellipse(missiles[i].pos.x+50, missiles[i].pos.y+50, missiles[i].r, misssiles[i].r);
-    // ellipse(missiles[j].x+4, missiles[j].y+4, missiles[j].r, missiles[j].r), 20;
-
-    ellipse(missiles[j].x + 4, missiles[j].y + 4, missiles[j].r, missiles[j].r);
+    if (missiles[j].heartbeats > 0)
+      ellipse(
+        missiles[j].x + 4,
+        missiles[j].y + 4,
+        missiles[j].r,
+        missiles[j].r
+      );
 
     ships.forEach((singleShip, index) => {
       if (singleShip.name === ship.name) return;
@@ -122,7 +139,6 @@ function draw() {
         createVector(singleShip.x, singleShip.y),
         createVector(missiles[j].x, missiles[j].y)
       );
-      console.log(d + "   odl   ");
       if (d < 2 * singleShip.r) {
         missiles.splice(j, 1);
         singleShip.hp -= 15;
@@ -137,8 +153,6 @@ function draw() {
           points: singleShip.points,
         };
         socket.emit("hitenemy", data);
-
-        //return true;
       }
     });
     metheors.forEach((singleMetheor, index) => {
@@ -189,10 +203,7 @@ function draw() {
       console.log(hurtShip);
       socket.emit("update", hurtShip);
     } else {
-      var tempShip = ships.filter(
-        (currentShip) => currentShip.name === ship.name
-      );
-      var tempData = {
+      const savedPlayer = {
         name: ship.name,
         points: myPoints,
       };
@@ -223,7 +234,7 @@ function draw() {
       ship = null;
       gameEnded = true;
 
-      socket.emit("savepoints", tempData);
+      socket.emit("savepoints", savedPlayer);
       socket.emit("shipexploded", ships.indexOf(ship));
     }
   });
