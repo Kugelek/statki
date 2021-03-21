@@ -109,19 +109,6 @@ function draw() {
         5
       );
     }
-
-    // rect(currentShip.x - 20, currentShip.y - 30, 40, 3, 5, 5, 5, 5);
-    // fill(0, 100, 100);
-    // rect(
-    //   currentShip.x - 20,
-    //   currentShip.y - 30,
-    //   currentShip.hp / 2.5,
-    //   3,
-    //   5,
-    //   5,
-    //   5,
-    //   5
-    // );
   });
   for (var j = missiles.length - 1; j >= 0; j--) {
     fill("rgb(100%,0%,10%)");
@@ -185,7 +172,8 @@ function draw() {
     ellipse(currMine.x, currMine.y, currMine.r, currMine.r);
     let tempMine = new Mine(currMine.x, currMine.y, 9);
 
-    if (!ship.steppedOnMine(tempMine)) return;
+    if (!ship.didCollideWith("mine", tempMine)) return;
+
     mines.splice(currMineIndex, 1);
     ship.hp -= 25;
 

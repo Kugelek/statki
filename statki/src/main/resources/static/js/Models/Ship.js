@@ -16,27 +16,17 @@ class Ship {
     this.position.add(this.velocity);
   }
 
-  steppedOnMine(other) {
-    var d = p5.Vector.dist(this.position, other.position);
-    if (d < 2 * other.r) {
-      // var sum = PI * this.r * this.r + PI * other.r * other.r;
-      // this.r = sqrt(sum / PI);
-      //this.r += other.r;
-      return true;
-    } else {
-      return false;
-    }
-  }
-  hitByMissile(missile) {
-    var d = p5.Vector.dist(this.position, createVector(missile.x, missile.y));
-    if (d < 2 * missile.r) {
-      // var sum = PI * this.r * this.r + PI * other.r * other.r;
-      // this.r = sqrt(sum / PI);
-      //this.r += other.r;
-      return true;
-    } else {
-      return false;
-    }
+  didCollideWith(type, hitObject) {
+    let distance;
+    if (type === "mine")
+      distance = p5.Vector.dist(this.position, hitObject.position);
+    if (type === "missile")
+      distance = p5.Vector.dist(
+        this.position,
+        createVector(hitObject.x, hitObject.y)
+      );
+
+    return distance < 2 * hitObject.r;
   }
 
   constrain() {
