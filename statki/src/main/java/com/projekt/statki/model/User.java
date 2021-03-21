@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 @Setter
 @Getter
@@ -100,5 +101,13 @@ public class User {
 
 	public void increaseDeathCount() {
 		this.deathsCount++;
+	}
+
+	public String humanReadableTime() {
+		return String.format("%d h, %d min, %d sec",
+			TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(this.playTime)),
+			TimeUnit.MILLISECONDS.toMinutes(this.playTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(this.playTime)),
+			TimeUnit.MILLISECONDS.toSeconds(this.playTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(this.playTime))
+		);
 	}
 }
