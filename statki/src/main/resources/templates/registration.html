@@ -24,8 +24,9 @@
 
 				<!-- success message -->
 				<div th:if="${param.success}">
-					<div class="alert alert-info">You've successfully registered
-						to our awesome app!</div>
+					<div class="alert alert-info">
+						You've successfully registered to our awesome app!
+					</div>
 				</div>
 
 				<h1>Registration</h1>
@@ -45,8 +46,14 @@
 
 					<div class="form-group">
 						<label class="control-label" for="email"> Email </label>
-						<input id="email" class="form-control" th:field="*{email}" required	pattern="^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$" autofocus="autofocus" />
+						<input id="email" class="form-control" th:field="*{email}" required pattern="^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$" autofocus="autofocus" />
 						<div class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="nick"> Nick </label>
+						<input id="nick" class="form-control" th:field="*{nick}" required minlength="4" pattern="^([a-zA-Z0-9_\-.]+)$" autofocus="autofocus" />
+						<div class="form-text" th:if="${#fields.hasErrors('nick')}" th:errors="*{nick}">Nick Error</div>
 					</div>
 
 					<div class="form-group">

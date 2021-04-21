@@ -29,6 +29,6 @@ public class StatkiApplication {
 	}
 	@EventListener(ApplicationReadyEvent.class)
 	public void Init() {
-//		userService.saveAdmin(new UserRegistrationDto("admin", "admin", "admin@admin.com", "Admin123"));
+//		userService.saveAdmin(new UserRegistrationDto("admin", "admin", "admin@admin.com", "admin", "Admin123"));
 	}
 }
