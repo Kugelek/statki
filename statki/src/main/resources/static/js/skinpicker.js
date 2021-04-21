@@ -42,20 +42,23 @@ function changeSkin3(myShip) {
 }
 
  function changeSkin4(myShip){
-     //pseudo ufo
-    fill(148,148,128)
-    ellipse(50,50, 70,80)
-    fill(171, 190, 219)
-    ellipse(50,55, 65,65)
+    const shipX = myShip.position.x;
+    const shipY = myShip.position.y;
+    const shipR = myShip.r * 2;
 
-    fill(128,128,128)
-    arc(50, 55, 100, 50, 0, PI );
-    fill(255)
-    ellipse(50,69, 10,10)
-    ellipse(25,67, 10,10)
-    ellipse(77, 67, 10,10)
-    fill(255)
-    arc(50, 77, 53, 24, 0, PI );
+     fill(148,148,128)
+     ellipse(shipX,shipY, shipR,shipR)
+     fill(171, 190, 219)
+     ellipse(shipX,shipY+3, shipR-5,shipR-5)
+
+     fill(128,128,128)
+     arc(shipX,shipY+5, shipR+5, shipR-10, 0, PI );
+     fill(255)
+     ellipse(shipX,shipY+8, 3,3)
+     ellipse(shipX-10,shipY+8, 3, 3)
+     ellipse(shipX+10, shipY+8, 3,3)
+     fill(255)
+     arc(shipX, shipY+10, shipR-1, shipR-18, 0, PI );
 
  }
 
