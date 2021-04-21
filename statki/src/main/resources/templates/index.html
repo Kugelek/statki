@@ -10,8 +10,11 @@
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
 	<link rel="stylesheet" href="/css/topbar.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/skinpicker.css" type="text/css"/>
 	<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 	<script type="text/javascript" src="/js/game.js"></script>
+	<script type="text/javascript" src="/js/skinpicker.js"></script>
+	<script type="text/javascript" src="/js/skins.enum.js"></script>
 	<script type="text/javascript" src="/js/Models/Ship.js"></script>
 	<script type="text/javascript" src="/js/Models/Mine.js"></script>
 	<script type="text/javascript" src="/js/Models/Missile.js"></script>
@@ -32,11 +35,19 @@
 				<ul class="nav navbar-nav right-container">
 
 					<li>Logged in as <span id="mailvalue" sec:authentication="principal.username"> User</span></li>
+					<button class="skinpicker__btn" onclick="toggleSkinpickerVisibility()"></button>
+
+
 					<li><a href="/users">Scores</a></li>
 					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
 				</ul>
 			</div>
 	</nav>
-
+	<div class="skinpicker">
+		<div class="skinpicker__item" id="skin-1" onclick="changeSkin(1)">Skin1</div>
+		<div class="skinpicker__item" id="skin-2" onclick="changeSkin(2)">Skin2</div>
+		<div class="skinpicker__item" id="skin-3" onclick="changeSkin(3)">Skin3</div>
+		<div class="skinpicker__item" id="skin-4" onclick="changeSkin(4)">Skin4</div>
+	</div>
 </body>
 </html>
