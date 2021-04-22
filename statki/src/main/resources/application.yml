@@ -1,8 +1,0 @@
-app:
-  datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/statkidb
-    username: postgres
-#    password: 1234
-#    password: Statki123
-    password: Poirot99
-    pool-size: 1000
