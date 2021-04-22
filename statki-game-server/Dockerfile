@@ -6,7 +6,8 @@ COPY . ./
 
 RUN npm install
 
-CMD "npm run start"
+CMD "node Game.js"
+# CMD "npm run start"
 
 # COPY package*.json ./
 
