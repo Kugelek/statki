@@ -35,7 +35,7 @@
 				<ul class="nav navbar-nav right-container">
 
 					<li>Logged in as <span id="mailvalue" sec:authentication="principal.username"> User</span></li>
-					<button class="skinpicker__btn" onclick="toggleSkinpickerVisibility()"></button>
+					<button class="skinpicker__btn" onclick="toggleSkinpickerVisibility()">Skinpicker</button>
 
 
 					<li><a href="/users">Scores</a></li>
@@ -43,11 +43,19 @@
 				</ul>
 			</div>
 	</nav>
-	<div class="skinpicker">
-		<div class="skinpicker__item" id="skin-1" onclick="changeSkin(1)">Skin1</div>
-		<div class="skinpicker__item" id="skin-2" onclick="changeSkin(2)">Skin2</div>
-		<div class="skinpicker__item" id="skin-3" onclick="changeSkin(3)">Skin3</div>
-		<div class="skinpicker__item" id="skin-4" onclick="changeSkin(4)">Skin4</div>
+	<div id="skinpicker" class="skinpicker menu-active">
+		<div class="skinpicker__item" id="skin-1" onclick="changeSkin(1)">
+			<img src="/img/skin-icons/1.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-2" onclick="changeSkin(2)">
+			<img src="/img/skin-icons/2.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-3" onclick="changeSkin(3)">
+			<img src="/img/skin-icons/3.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-4" onclick="changeSkin(4)">
+			<img src="/img/skin-icons/4.png" alt="skin icon"/>
+		</div>
 	</div>
 </body>
 </html>

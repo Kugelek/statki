@@ -1,9 +1,11 @@
-let isSkinpickerActive = false;
+
 const toggleSkinpickerVisibility = () => {
-    isSkinpickerActive = !isSkinpickerActive;
-    console.log(isSkinpickerActive);
+    const menu = document.querySelector('#skinpicker');
+    menu.classList.toggle("menu-active");
 }
 function changeSkin(skinID){
+    const menu = document.querySelector('#skinpicker');
+    menu.classList.remove("menu-active");
     switch (skinID) {
         case 1:
             ship.skinBuilder = changeSkin1;
