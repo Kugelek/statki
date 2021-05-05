@@ -4,7 +4,6 @@ const toggleSkinpickerVisibility = () => {
     console.log(isSkinpickerActive);
 }
 function changeSkin(skinID){
-    console.log("przeszlo");
     switch (skinID) {
         case 1:
             ship.skinBuilder = changeSkin1;
@@ -30,8 +29,20 @@ function changeSkin1(myShip) {
 }
 
 function changeSkin2(myShip) {
-    fill(50, 215, 108);
-    ellipse(myShip.position.x, myShip.position.y, myShip.r * 2, myShip.r * 2);
+    c1=color(148,48,128)
+    c2 = color(255,20, 20)
+    const shipR = myShip.r ;
+
+    fill(148,148,128)
+    drawPolygonShape(myShip.position.x, myShip.position.y, shipR*1.16, 6);
+    fill(154, 141, 131)
+    drawPolygonShape(myShip.position.x, myShip.position.y, shipR * 0.95, 6);
+    fill(117, 120, 141)
+    arc(myShip.position.x, myShip.position.y+5, shipR * 1.4, shipR * 1.7, 0.8*PI, 2.2*PI );
+    fill(80)
+    drawPolygonShape(myShip.position.x, myShip.position.y, shipR /2.5, 8);
+    fill(171, 190, 219)
+    arc(myShip.position.x, myShip.position.y+5, shipR/3, shipR/3, -PI, -2*PI );
 }
 
 function changeSkin3(myShip) {
@@ -62,6 +73,11 @@ function changeSkin3(myShip) {
 
  }
 
-
-
+function drawPolygonShape(x, y, radius, anglesCount) {
+    let angleVal = PI * 2 / anglesCount;
+    beginShape();
+    for (let currAngle = 0; currAngle < PI *2; currAngle += angleVal)
+        vertex(x + cos(currAngle) * radius, y + sin(currAngle) * radius);
+    endShape(CLOSE);
+}
 
