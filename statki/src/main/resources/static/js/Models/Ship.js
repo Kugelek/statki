@@ -6,6 +6,8 @@ class Ship {
     this.hp = hp;
     this.name = name;
     this.points = points;
+    this.skinName = 1;
+    this.skinBuilder = null;
   }
 
   update() {
@@ -46,6 +48,11 @@ class Ship {
     ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
   }
 
+  changeSkin() {
+    fill(150, 215, 88);
+    ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
+  }
+
   drawCurrentScore() {
     fill(250, 215, 28);
     textAlign(CENTER);
@@ -72,7 +79,19 @@ class Ship {
   }
 
   show() {
-    this.drawShipWithSkin();
+    if(!this.skinBuilder){
+      this.drawShipWithSkin();
+    }else{
+      this.skinBuilder(this);
+    }
+
+    // if(this.skinName === "default"){
+    //   this.drawShipWithSkin();
+    // }else{
+    //   this.changeSkin();
+    // }
+
+
     this.drawHpBar();
     this.drawNickname();
     this.drawCurrentScore();

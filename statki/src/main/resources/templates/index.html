@@ -10,8 +10,11 @@
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
 	<link rel="stylesheet" href="/css/topbar.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/skinpicker.css" type="text/css"/>
 	<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 	<script type="text/javascript" src="/js/game.js"></script>
+	<script type="text/javascript" src="/js/skinpicker.js"></script>
+	<script type="text/javascript" src="/js/skins.enum.js"></script>
 	<script type="text/javascript" src="/js/Models/Ship.js"></script>
 	<script type="text/javascript" src="/js/Models/Mine.js"></script>
 	<script type="text/javascript" src="/js/Models/Missile.js"></script>
@@ -22,21 +25,36 @@
 
 </head>
 <body>
-	<!-- create navigation bar ( header) -->
 	<nav class="customnavbar navbar-fixed-top">
-		<a class="customnavbar__home" href="#" th:href="@{/}">
-			<img class="customnavbar__logo" src="/img/logo.png" alt="logo"/>
-			<h1 class="customnavbar__heading" >TeamShips.io</h1>
-		</a>
-		<div id="navbar" class="collapse navbar-collapse">
-			<ul class="nav navbar-nav right-container">
-<!--				<span th:text="${nick}"></span>-->
-<!--				<span id="mailvalue" sec:authentication="principal.username"></span>-->
-				<li>Logged in as <span id="mailvalue" th:text="${nick}"></span></li>
-				<li><a href="/users">Scores</a></li>
-				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-			</ul>
-		</div>
+			<a class="customnavbar__home" href="#" th:href="@{/}">
+				<img class="customnavbar__logo" src="/img/logo.png" alt="logo"/>
+				<h1 class="customnavbar__heading" >TeamShips.io</h1>
+			</a>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav right-container">
+
+					<li>Logged in as <span id="mailvalue" th:text="${nick}"></span></li>
+					<button class="skinpicker__btn" onclick="toggleSkinpickerVisibility()">Skinpicker</button>
+					<li><a href="/users">Scores</a></li>
+					<li><a href="/donate">Donate</a></li>
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
 	</nav>
+	<div id="skinpicker" class="skinpicker menu-active">
+		<div class="skinpicker__item" id="skin-1" onclick="changeSkin(1)">
+			<img src="/img/skin-icons/1.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-2" onclick="changeSkin(2)">
+			<img src="/img/skin-icons/2.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-3" onclick="changeSkin(3)">
+			<img src="/img/skin-icons/3.png" alt="skin icon"/>
+		</div>
+		<div class="skinpicker__item" id="skin-4" onclick="changeSkin(4)">
+			<img src="/img/skin-icons/4.png" alt="skin icon"/>
+		</div>
+	</div>
+
 </body>
 </html>

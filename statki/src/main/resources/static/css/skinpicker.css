@@ -1,0 +1,52 @@
+.skinpicker{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    right: -5vw;
+    border: 10px solid white;
+    border-radius: 20px;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    top: 10vh;
+
+    display: flex;
+
+    right: 3vw;
+    transition: 1s all ease-in-out;
+
+
+}
+.skinpicker__item{
+    padding: 2rem;
+    margin: 2rem;
+    max-height: 15vh;
+    background-color: white;
+    opacity: .5;
+    color: white;
+    cursor:pointer;
+    transition: 0.3s all ease-in-out;
+}
+.skinpicker__item:hover{
+    opacity: 1;
+}
+
+.menu-active{
+
+    opacity: 1;
+
+}
+
+.skinpicker-hidden{
+    display: none;
+    opacity: 0;
+}
+
+.skinpicker__btn{
+    border: none;
+    margin-left: 3rem;
+    background-color: white;
+
+}
