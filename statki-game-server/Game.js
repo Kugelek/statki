@@ -73,6 +73,8 @@ io.sockets.on("connection", (socket) => {
   });
 
   socket.on("savepoints", (data) => {
+    console.log(data.points);
+    console.log(data.name);
     axios
       .patch(`http://localhost:8080/api/v1/User/${data.name}`, {
         actualScore: data.points,
