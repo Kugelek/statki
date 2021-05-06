@@ -2,115 +2,60 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body {
-            font-family: Arial;
-            font-size: 17px;
-            padding: 8px;
-        }
+    <link rel="stylesheet" href="/css/topbar.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/donate.css" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap" rel="stylesheet">
 
-        * {
-            box-sizing: border-box;
-        }
-
-        .row {
-            display: -ms-flexbox; /* IE10 */
-            display: flex;
-            -ms-flex-wrap: wrap; /* IE10 */
-            flex-wrap: wrap;
-            margin: 0 -16px;
-        }
-
-        .col-25 {
-            -ms-flex: 25%; /* IE10 */
-            flex: 25%;
-        }
-
-        .col-50 {
-            -ms-flex: 50%; /* IE10 */
-            flex: 50%;
-        }
-
-        .col-75 {
-            -ms-flex: 75%; /* IE10 */
-            flex: 75%;
-        }
-
-        .col-25,
-        .col-50,
-        .col-75 {
-            padding: 0 16px;
-        }
-
-        .container {
-            background-color: #f2f2f2;
-            padding: 5px 20px 15px 20px;
-            border: 1px solid lightgrey;
-            border-radius: 3px;
-        }
-
-        input[type=text] {
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        label {
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .icon-container {
-            margin-bottom: 20px;
-            padding: 7px 0;
-            font-size: 24px;
-        }
-
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            width: 100%;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 17px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        a {
-            color: #2196F3;
-        }
-
-        hr {
-            border: 1px solid lightgrey;
-        }
-
-        span.price {
-            float: right;
-            color: grey;
-        }
-
-        /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
-        @media (max-width: 800px) {
-            .row {
-                flex-direction: column-reverse;
-            }
-            .col-25 {
-                margin-bottom: 20px;
-            }
-        }
-
-    </style>
 </head>
 <body>
+    <!--<nav class="customnavbar navbar-fixed-top">-->
+        <!--<a class="customnavbar__home" href="#" th:href="@{/}">-->
+            <!--<img class="customnavbar__logo" src="/img/logo.png" alt="logo"/>-->
+            <!--<h1 class="customnavbar__heading" >TeamShips.io</h1>-->
+        <!--</a>-->
+        <!--<div id="navbar" class="collapse navbar-collapse">-->
+            <!--<ul class="nav navbar-nav right-container">-->
+                <!--<li>Logged in as <span id="mailvalue" sec:authentication="principal.username"> User</span></li>-->
+                <!--<li><a href="/users">Scores</a></li>-->
+                <!--<b><li><a href="/donate">Donate</a></li></b>-->
+                <!--<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</nav>-->
+    <!--<section class="donate-box">-->
+
+        <!--<h1 class="donate__heading">People rise by lifting others</h1>-->
+        <!--<h3 class="donate__subheading">Our team develops the project completely for free. </h3>-->
+        <!--<h3 class="donate__subheading">You can help us build TeamShips by donating some money. </h3>-->
+        <!--<form  class="donate-form" method="post"  action="/pay">-->
+            <!--<label>Accepted Cards</label>-->
+                <!--<div class="icon-container">-->
+                    <!--<i class="fa fa-cc-visa" style="color:navy;"></i>-->
+                    <!--<i class="fa fa-cc-amex" style="color:blue;"></i>-->
+                    <!--<i class="fa fa-cc-mastercard" style="color:red;"></i>-->
+                    <!--<i class="fa fa-cc-discover" style="color:orange;"></i>-->
+                <!--</div>-->
+                <!--<label for="price">Total</label>-->
+                <!--<input type="text" id="price" name="price" value="10">-->
+                <!--<label for="currency">Currency</label>-->
+                <!--<input type="text" id="currency" name="currency" placeholder="Enter Currency">-->
+                <!--<label for="method">Payment Method</label>-->
+                <!--<input type="text" id="method" name="method" placeholder="Payment Method">-->
+                <!--<label for="intent">Intent</label>-->
+                <!--<input type="text" id="intent" name="intent" value="sale">-->
+                <!--<label for="description">Payment Description</label>-->
+                <!--<input type="text" id="description" name="description" placeholder="Payment Description">-->
+            <!--<input type="submit" value="Continue to checkout" class="btn">-->
+        <!--</form>-->
+    <!--</section>-->
+
+
 <div class="row">
     <div class="col-75">
         <div class="container">
@@ -139,17 +84,6 @@
 
                 <input type="submit" value="Continue to checkout" class="btn">
             </form>
-        </div>
-    </div>
-    <div class="col-25">
-        <div class="container">
-            <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>4</b></span></h4>
-            <p><a href="#">Product 1</a> <span class="price">$1</span></p>
-            <p><a href="#">Product 2</a> <span class="price">$4</span></p>
-            <p><a href="#">Product 3</a> <span class="price">$3</span></p>
-            <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-            <hr>
-            <p>Total <span class="price" style="color:black"><b>$10</b></span></p>
         </div>
     </div>
 </div>
