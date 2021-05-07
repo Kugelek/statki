@@ -193,7 +193,7 @@ function draw() {
     } else {
       const savedPlayer = {
         name: ship.name,
-        points: myPoints,
+        points: ship.points,
       };
 
       background(0);
@@ -212,7 +212,7 @@ function draw() {
 
       text(`${nickname}`, ship.position.x, ship.position.y);
       textSize(5);
-      text(`SCORE ${myPoints}`, ship.position.x, ship.position.y + 15);
+      text(`SCORE ${ship.points}`, ship.position.x, ship.position.y + 15);
 
       button = createButton("Try again!");
       button.position(ship.position.x + 200, ship.position.y + 300);

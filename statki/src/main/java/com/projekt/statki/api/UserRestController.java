@@ -35,13 +35,14 @@ public class UserRestController {
                 .orElse(null);
 
     }
+
     @Transactional
     @DeleteMapping(path = "{id}")
     public void deleteUserById(@PathVariable("id") Long id) {
         userRepository.deleteUserById(id);
     }
 
-    //    @PatchMapping(path = "{id}")
+//    @PatchMapping(path = "{id}")
 //    public void updateUser(@PathVariable("id") Long id, @Validated @NonNull @RequestBody Long highScore){
 //        User userToFind = userRepository.findById(id).orElseThrow(null);
 //        userService.updateScore(userToFind,highScore);
@@ -57,8 +58,7 @@ public class UserRestController {
 
     @PatchMapping(path = "{mail}")
     public void updateUser(@PathVariable("mail") String mail, @Validated @NonNull @RequestBody User user) {
-
-        User userToFind = userRepository.findByEmail(mail);
+        User userToFind = userRepository.findByNick(mail);
         userService.updateScore(userToFind, user.getActualScore());
     }
 }
