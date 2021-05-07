@@ -28,21 +28,23 @@
             <table class="table table-dark">
                 <thead>
                 <tr>
-                    <th class="text">Ranking</th>
-                    <th class="text">First name</th>
-                    <th class="text">Last name</th>
-                    <th class="text">Email</th>
-                    <th class="text">High Score</th>
-                    <th class="text">Death Count</th>
-                    <th class="text">Playtime</th>
+                    <td class="td-text">Ranking</td>
+                    <td th:if="${roleAttribute == 'admin'}" class="td-text">First name</td>
+                    <td th:if="${roleAttribute == 'admin'}" class="td-text">Last name</td>
+                    <td th:if="${roleAttribute == 'admin'}" class="td-text">Email</td>
+                    <td class="td-text">Nick</td>
+                    <td class="td-text">High Score</td>
+                    <td class="td-text">Death Count</td>
+                    <td class="td-text">Playtime</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user,ranking : ${userList}">
                     <td th:text="${ranking.index+1}"></td>
-                    <td th:text="${user.getFirstName()}"></td>
-                    <td th:text="${user.getLastName()}"></td>
-                    <td th:text="${user.getEmail()}"></td>
+                    <td th:if="${roleAttribute == 'admin'}" th:text="${user.getFirstName()}"></td>
+                    <td th:if="${roleAttribute == 'admin'}" th:text="${user.getLastName()}"></td>
+                    <td th:if="${roleAttribute == 'admin'}" th:text="${user.getEmail()}"></td>
+                    <td th:text="${user.getNick()}"></td>
                     <td th:text="${user.getHighScore()}"></td>
                     <td th:text="${user.getDeathsCount()}"></td>
                     <td th:text="${user.humanReadableTime()}"></td>
