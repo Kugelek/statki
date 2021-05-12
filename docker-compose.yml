@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+  web:
+    image: 'node:latest'
+    build:
+      context: ./statki-game-server
+      dockerfile: Dockerfile
+#      docker:
+#        web: Dockerfile
+    container_name: web
+    depends_on:
+      - app
+    ports:
+      - '127.0.0.1:3000:3000'
+      - '192.168.99.100:3000:3000'
+    expose:
+      - '3000'
+#    run:
+#      web: npm run start
+#    release:
+#      image: web
+#      command:
+#        - npm run migrate up
+  app:
+    image: 'docker-statki:latest'
+    ports:
+      - '127.0.0.1:8080:8080'
+      - '192.168.99.100:8080:8080'
+    expose:
+      - '8080'
+    build:
+      context: ./statki
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/statkidb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Statki123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    image: 'postgres:latest'
+    container_name: db
+    environment:
+      - POSTGRES_DB=statkidb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Statki123

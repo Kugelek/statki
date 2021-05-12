@@ -1,6 +1,7 @@
 const axios = require("axios");
 const gameSettings = require("./config/gameSettings");
 
+require("dotenv").config();
 const { Server } = require("./Server");
 const { Ship } = require("./Ship");
 const { MetheorRefiller } = require("./MetheorRefiller");
@@ -73,8 +74,6 @@ io.sockets.on("connection", (socket) => {
   });
 
   socket.on("savepoints", (data) => {
-    console.log(data.points);
-    console.log(data.name);
     axios
       .patch(`http://localhost:8080/api/v1/User/${data.name}`, {
         actualScore: data.points,

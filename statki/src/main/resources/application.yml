@@ -1,0 +1,25 @@
+serwer:
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+  port: 8080
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://db:5432/statkidb
+    username: postgres
+#    password: 1234
+    password: Statki123
+#    password: Poirot99
+    pool-size: 1000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL92Dialect
+    hibernate:
+      ddl-auto: update
+paypal:
+  mode: sandbox
+  client:
+    id: Aa0KAhI20DUkODrEO2Ppjs1_39swbBd3IjAnFy1w0W2Bur__acAgwodhzg3h2YJDqgJriCTkpDc6cOy9
+    secret: EBv_s10WUdjPU97BuvdaR40pG6qIeO8gG1yrmjBDyICQZwvGtAATYeMf0vdlEP5YuRK-WLLkGhUTS-bq

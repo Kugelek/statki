@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "dotenv": "^9.0.2",
     "express": "^4.13.4",
     "socket.io": "^1.4.5"
   }
