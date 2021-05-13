@@ -16,6 +16,8 @@ services:
       - '192.168.99.100:3000:3000'
     expose:
       - '3000'
+#    links:
+#      - app
 #    run:
 #      web: npm run start
 #    release:

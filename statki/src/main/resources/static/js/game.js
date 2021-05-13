@@ -18,7 +18,7 @@ const reloadPage = () => window.location.reload();
 function setup() {
   bg = loadImage("img/login-bg.jpg");
   createCanvas(window.innerWidth, window.innerHeight);
-  socket = io.connect("http://192.168.99.100:3000");
+  socket = io.connect("http://127.0.0.1:3000");
   ship = new Ship(
     random(width),
     random(height),
