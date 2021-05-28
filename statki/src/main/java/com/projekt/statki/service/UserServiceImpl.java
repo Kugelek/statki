@@ -2,6 +2,7 @@ package com.projekt.statki.service;
 
 import com.projekt.statki.model.Role;
 import com.projekt.statki.model.User;
+import com.projekt.statki.repository.RoleRepository;
 import com.projekt.statki.repository.UserRepository;
 import com.projekt.statki.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +20,23 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
-	
+	private RoleRepository roleRepository;
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	public UserServiceImpl(UserRepository userRepository) {
+
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
 		super();
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	@Override
 	public User save(UserRegistrationDto registrationDto) {
+		Role roleTosave = roleRepository.findRoleById(1L);
 		User user = new User(registrationDto.getFirstName(),
 				registrationDto.getLastName(), registrationDto.getEmail(), registrationDto.getNick(),
-				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(roleTosave));
 		return userRepository.save(user);
 	}
 
@@ -66,9 +70,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User saveAdmin(UserRegistrationDto registrationDto) {
+		Role roleTosave = roleRepository.findRoleById(2L);
+		System.out.println(roleTosave);
 		User user = new User(registrationDto.getFirstName(),
 				registrationDto.getLastName(), registrationDto.getEmail(), registrationDto.getNick(),
-				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_ADMIN")));
+				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(roleTosave));
 		return userRepository.save(user);
 	}
 }

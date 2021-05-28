@@ -1,5 +1,7 @@
 package com.projekt.statki.model;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
+@ToString
 public class Role {
 	
 	@Id

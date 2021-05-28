@@ -25,10 +25,11 @@ public class StatkiApplication {
 
 	@GetMapping("/hello")
 	public String hello() {
-		return String.format("Kapitan bomba gotowy do akcji");
+		return String.format("Serwer dziala");
 	}
-	@EventListener(ApplicationReadyEvent.class)
-	public void Init() {
-//		userService.saveAdmin(new UserRegistrationDto("admin", "admin", "admin@admin.com", "admin", "Admin123"));
-	}
+//	@EventListener(ApplicationReadyEvent.class)
+//	public void Init() {
+////		userService.saveAdmin(new UserRegistrationDto("Admin", "Admin", "admin@admin.com", "Admin", "Admin123"));
+////		userService.save(new UserRegistrationDto("example", "example", "example@example.com", "example", "Example123"));
+//	}
 }
