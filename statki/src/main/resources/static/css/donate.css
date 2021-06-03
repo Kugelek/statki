@@ -1,0 +1,81 @@
+.donate-box{
+    margin: auto;
+    margin-top: 8vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.donate__heading{
+    font-size: 5rem;
+    letter-spacing: 1.25rem;
+    font-weight: 300;
+    color: #878787;
+    margin-bottom: 6rem;
+    text-align: center;
+}
+.donate__subheading{
+
+    font-size: 2.5rem;
+    color: #444444;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.donate-form {
+    margin-top: 6rem;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 3rem;
+    -webkit-box-shadow: 0px 1px 11px 3px rgba(155, 155, 155, 0.43);
+    box-shadow: 0px 1px 11px 3px rgba(155, 155, 155, 0.43);
+    margin-bottom: 10rem;
+}
+
+.cards{
+    align-self: center;
+}
+
+
+
+.input-label{
+    color: #767676;
+    font-weight: normal;
+    font-size: 1.2rem;
+    align-self: flex-start;
+    /*margin: auto;*/
+    margin-left: 10rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-select{
+    color: #646464;
+    /*margin: auto;*/
+    align-self: flex-end;
+    padding: 1rem 2rem;
+    border: 3px solid #878787;
+    border-radius: 5px;
+    margin-right: 10rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-text{
+    color: #646464;
+    border: 3px solid #878787;
+    border-radius: 5px;
+    padding: 1rem 2rem;
+    margin-right: 10rem;
+    /*margin: auto;*/
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+}
+.input-submit{
+    align-self: center;
+    margin-bottom: 1.5rem;
+
+
+}
